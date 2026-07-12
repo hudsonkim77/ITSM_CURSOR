@@ -89,5 +89,190 @@ DOMAINS = [
 DOMAINS_BY_KEY = {d["key"]: d for d in DOMAINS}
 
 
+# N:M 매핑 테이블 (도메인 폴더 하위 *이력/*.csv)
+# owner_field = 부모 마스터 PK, related_field = 연결 대상 PK, related_domain = 옵션 소스 도메인
+DOMAIN_MAPS = {
+    "change": [
+        {
+            "key": "change_ci",
+            "title": "변경 ↔ 구성",
+            "rel_path": "변경히스토리/CHANGE_CI_MAP.csv",
+            "owner_field": "CHG_TICKET_ID",
+            "related_field": "CI_ID",
+            "related_domain": "config",
+            "extra_fields": ["APPLIED_DT", "WORK_NOTE"],
+        },
+    ],
+    "incident": [
+        {
+            "key": "incident_ci",
+            "title": "장애 ↔ 구성",
+            "rel_path": "장애이력/INCIDENT_CI_MAP.csv",
+            "owner_field": "INCIDENT_ID",
+            "related_field": "CI_ID",
+            "related_domain": "config",
+            "extra_fields": ["IMPACT_DESC"],
+        },
+    ],
+    "problem": [
+        {
+            "key": "problem_incident",
+            "title": "문제 ↔ 장애",
+            "rel_path": "문제이력/PROBLEM_INCIDENT_MAP.csv",
+            "owner_field": "PROBLEM_ID",
+            "related_field": "INCIDENT_ID",
+            "related_domain": "incident",
+            "extra_fields": ["NOTE"],
+        },
+    ],
+    "deploy": [
+        {
+            "key": "deploy_chg",
+            "title": "배포 ↔ 변경",
+            "rel_path": "배포이력/DEPLOY_CHG_MAP.csv",
+            "owner_field": "DEPLOY_ID",
+            "related_field": "CHG_TICKET_ID",
+            "related_domain": "change",
+            "extra_fields": ["NOTE"],
+        },
+    ],
+    "request": [
+        {
+            "key": "request_ci",
+            "title": "요청 ↔ 구성",
+            "rel_path": "요청이력/REQUEST_CI_MAP.csv",
+            "owner_field": "REQ_ID",
+            "related_field": "CI_ID",
+            "related_domain": "config",
+            "extra_fields": ["NOTE"],
+        },
+        {
+            "key": "request_incident",
+            "title": "요청 ↔ 장애",
+            "rel_path": "요청이력/REQUEST_INCIDENT_MAP.csv",
+            "owner_field": "REQ_ID",
+            "related_field": "INCIDENT_ID",
+            "related_domain": "incident",
+            "extra_fields": ["NOTE"],
+        },
+    ],
+    "sla": [
+        {
+            "key": "sla_incident",
+            "title": "SLA ↔ 장애",
+            "rel_path": "SLA이력/SLA_INCIDENT_MAP.csv",
+            "owner_field": "SLA_ID",
+            "related_field": "INCIDENT_ID",
+            "related_domain": "incident",
+            "extra_fields": ["BREACH_YN", "NOTE"],
+        },
+        {
+            "key": "sla_ops",
+            "title": "SLA ↔ 운영상태",
+            "rel_path": "SLA이력/SLA_OPS_MAP.csv",
+            "owner_field": "SLA_ID",
+            "related_field": "OPS_ID",
+            "related_domain": "ops",
+            "extra_fields": ["NOTE"],
+        },
+    ],
+    "baseline": [
+        {
+            "key": "baseline_ci",
+            "title": "형상 ↔ 구성",
+            "rel_path": "형상이력/BASELINE_CI_MAP.csv",
+            "owner_field": "BASELINE_ID",
+            "related_field": "CI_ID",
+            "related_domain": "config",
+            "extra_fields": ["BASELINE_VERSION", "BASELINE_AREA", "APPLIED_DT", "NOTE"],
+        },
+    ],
+    "ops": [
+        {
+            "key": "ops_ci",
+            "title": "운영상태 ↔ 구성",
+            "rel_path": "운영이력/OPS_CI_MAP.csv",
+            "owner_field": "OPS_ID",
+            "related_field": "CI_ID",
+            "related_domain": "config",
+            "extra_fields": ["NOTE"],
+        },
+    ],
+    "interface": [
+        {
+            "key": "interface_ci",
+            "title": "연계 ↔ 구성",
+            "rel_path": "연계이력/INTERFACE_CI_MAP.csv",
+            "owner_field": "INTERFACE_ID",
+            "related_field": "CI_ID",
+            "related_domain": "config",
+            "extra_fields": ["NOTE"],
+        },
+    ],
+    "backup": [
+        {
+            "key": "backup_ci",
+            "title": "백업 ↔ 구성",
+            "rel_path": "백업이력/BACKUP_CI_MAP.csv",
+            "owner_field": "BACKUP_ID",
+            "related_field": "CI_ID",
+            "related_domain": "config",
+            "extra_fields": ["NOTE"],
+        },
+    ],
+}
+
+# 마스터 행의 FK 필드 → 참조 도메인 (등록/수정 시 셀렉트)
+# ref_domain == 자기 key 이면 동일 CSV 셀프 참조
+DOMAIN_FKS = {
+    "change": [
+        {"field": "TRIGGERED_BY_INCIDENT_ID", "ref_domain": "incident", "optional": True},
+    ],
+    "incident": [
+        {"field": "CAUSED_BY_CHG_TICKET_ID", "ref_domain": "change", "optional": True},
+    ],
+    "config": [
+        {"field": "PARENT_CI_ID", "ref_domain": "config", "optional": True},
+        {"field": "CHG_TICKET_ID", "ref_domain": "change", "optional": True},
+    ],
+    "sla": [
+        {"field": "DEPLOY_ID", "ref_domain": "deploy", "optional": True},
+    ],
+    "baseline": [
+        {"field": "RESOLVED_PROBLEM_ID", "ref_domain": "problem", "optional": True},
+    ],
+    "event": [
+        {"field": "CI_ID", "ref_domain": "config", "optional": True},
+        {"field": "SOURCE_OPS_ID", "ref_domain": "ops", "optional": True},
+        {"field": "ESCALATED_INCIDENT_ID", "ref_domain": "incident", "optional": True},
+    ],
+    "test": [
+        {"field": "DEPLOY_ID", "ref_domain": "deploy", "optional": False},
+    ],
+    "interface": [
+        {"field": "VALIDATED_BY_TEST_ID", "ref_domain": "test", "optional": True},
+        {"field": "BASELINE_ID", "ref_domain": "baseline", "optional": True},
+    ],
+    "backup": [
+        {"field": "RESTORED_FROM_BACKUP_ID", "ref_domain": "backup", "optional": True},
+    ],
+}
+
+
 def ko_label(column):
     return COLUMN_LABELS_KO.get(column, column)
+
+
+def maps_for(domain_key):
+    return DOMAIN_MAPS.get(domain_key, [])
+
+
+def fks_for(domain_key):
+    return DOMAIN_FKS.get(domain_key, [])
+
+
+def map_by_key(domain_key, map_key):
+    for m in maps_for(domain_key):
+        if m["key"] == map_key:
+            return m
+    return None

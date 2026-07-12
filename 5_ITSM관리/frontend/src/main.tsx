@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import DomainPage from "./pages/DomainPage";
 import Management from "./pages/Management";
 import ErdPage from "./pages/ErdPage";
+import WbsPage from "./pages/WbsPage";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,7 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { index: true, element: <Dashboard /> },
+      { path: "wbs", element: <WbsPage /> },
       { path: "d/:key", element: <DomainPage /> },
       { path: "erd", element: <ErdPage /> },
       { path: "management", element: <Management /> },

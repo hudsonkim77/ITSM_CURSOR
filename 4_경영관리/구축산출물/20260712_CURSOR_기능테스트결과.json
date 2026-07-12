@@ -1,0 +1,149 @@
+{
+  "title": "ITSM_CURSOR 기능 테스트 결과",
+  "docNo": "ITSM-TST-2026-002",
+  "started": "2026-07-12 22:11:01",
+  "ended": "2026-07-12 22:11:01",
+  "apiBase": "http://127.0.0.1:8000",
+  "summary": {
+    "total": 27,
+    "pass": 27,
+    "fail": 0
+  },
+  "results": [
+    {
+      "name": "헬스체크 GET /api/health",
+      "pass": true,
+      "detail": "HTTP 200"
+    },
+    {
+      "name": "도메인 목록",
+      "pass": true,
+      "detail": "count=13"
+    },
+    {
+      "name": "대시보드 집계",
+      "pass": true,
+      "detail": "HTTP 200"
+    },
+    {
+      "name": "ERD 정의",
+      "pass": true,
+      "detail": "HTTP 200"
+    },
+    {
+      "name": "변경관리 조회",
+      "pass": true,
+      "detail": "rows=29"
+    },
+    {
+      "name": "변경관리 등록",
+      "pass": true,
+      "detail": "CHG_20260712_010"
+    },
+    {
+      "name": "변경관리 수정",
+      "pass": true,
+      "detail": "HTTP 200"
+    },
+    {
+      "name": "변경-구성 매핑 등록",
+      "pass": true,
+      "detail": "CHG_20260712_010↔AST-SEC-007"
+    },
+    {
+      "name": "변경-구성 매핑 삭제",
+      "pass": true,
+      "detail": "MAP_0067"
+    },
+    {
+      "name": "FK 옵션",
+      "pass": true,
+      "detail": "keys=['TRIGGERED_BY_INCIDENT_ID']"
+    },
+    {
+      "name": "이력 기록(ADDED/UPDATED)",
+      "pass": true,
+      "detail": "actions=['ADDED', 'MAP_ADDED', 'MAP_REMOVED', 'UPDATED']"
+    },
+    {
+      "name": "변경관리 삭제(정리)",
+      "pass": true,
+      "detail": "CHG_20260712_010"
+    },
+    {
+      "name": "도메인 조회:incident",
+      "pass": true,
+      "detail": "rows=2"
+    },
+    {
+      "name": "도메인 조회:config",
+      "pass": true,
+      "detail": "rows=312"
+    },
+    {
+      "name": "도메인 조회:problem",
+      "pass": true,
+      "detail": "rows=1"
+    },
+    {
+      "name": "도메인 조회:deploy",
+      "pass": true,
+      "detail": "rows=5"
+    },
+    {
+      "name": "도메인 조회:request",
+      "pass": true,
+      "detail": "rows=1"
+    },
+    {
+      "name": "도메인 조회:sla",
+      "pass": true,
+      "detail": "rows=1"
+    },
+    {
+      "name": "도메인 조회:baseline",
+      "pass": true,
+      "detail": "rows=2"
+    },
+    {
+      "name": "도메인 조회:ops",
+      "pass": true,
+      "detail": "rows=1"
+    },
+    {
+      "name": "도메인 조회:event",
+      "pass": true,
+      "detail": "rows=1"
+    },
+    {
+      "name": "도메인 조회:test",
+      "pass": true,
+      "detail": "rows=2"
+    },
+    {
+      "name": "도메인 조회:interface",
+      "pass": true,
+      "detail": "rows=1"
+    },
+    {
+      "name": "도메인 조회:backup",
+      "pass": true,
+      "detail": "rows=1"
+    },
+    {
+      "name": "경영관리 잠금해제",
+      "pass": true,
+      "detail": "HTTP 200"
+    },
+    {
+      "name": "업무보고 PDF 목록",
+      "pass": true,
+      "detail": "n=5"
+    },
+    {
+      "name": "구축산출물 PDF 목록",
+      "pass": true,
+      "detail": "n=7"
+    }
+  ]
+}

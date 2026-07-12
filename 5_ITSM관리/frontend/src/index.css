@@ -58,3 +58,299 @@ body {
     @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
   }
 }
+
+/* ── 공단 공통 양식 문서 ── */
+.official-doc {
+  box-sizing: border-box;
+  width: 100%;
+  background: #fff;
+  color: #000;
+  padding: 28px 32px 36px;
+  font-family: "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+  font-size: 12px;
+  line-height: 1.45;
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+  overflow: visible;
+}
+
+.official-doc *,
+.official-doc *::before,
+.official-doc *::after {
+  box-sizing: border-box;
+}
+
+.official-doc__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid #000;
+  min-height: 96px;
+}
+
+.official-doc__org {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-right: 8px;
+}
+
+.official-doc__org-name {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.official-doc__org-dept {
+  margin: 4px 0 0;
+  font-size: 11px;
+  color: #333;
+}
+
+.official-doc__meta {
+  margin: 2px 0 0;
+  font-size: 11px;
+  color: #444;
+}
+
+.official-doc__meta:first-of-type {
+  margin-top: 12px;
+}
+
+.official-doc__approval {
+  flex: 0 0 216px;
+  width: 216px;
+}
+
+.official-doc__approval-label {
+  margin: 0 0 4px;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+}
+
+.official-doc__approval-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: 1px solid #000;
+  text-align: center;
+  font-size: 10px;
+}
+
+.official-doc__approval-table th,
+.official-doc__approval-table td {
+  border: 1px solid #000;
+  padding: 3px 2px;
+  vertical-align: middle;
+  overflow: hidden;
+  word-break: keep-all;
+}
+
+.official-doc__approval-table th {
+  background: #f0f0f0;
+  font-weight: 700;
+  height: 22px;
+}
+
+.official-doc__approval-sign td {
+  height: 56px;
+  padding: 4px 2px;
+}
+
+.official-doc__drafter-name {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.25;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.official-doc__approval-date td {
+  height: 20px;
+  font-size: 9px;
+  color: #555;
+}
+
+.official-doc__title {
+  margin: 0 0 20px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1.4;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+.official-doc__info,
+.official-doc__body {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: 1px solid #000;
+  margin-bottom: 16px;
+  font-size: 12px;
+}
+
+.official-doc__info th,
+.official-doc__info td,
+.official-doc__body th,
+.official-doc__body td {
+  border: 1px solid #000;
+  padding: 8px 10px;
+  vertical-align: top;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+.official-doc__info th,
+.official-doc__body thead th,
+.official-doc__body tbody th {
+  width: 22%;
+  background: #f3f3f3;
+  font-weight: 600;
+  text-align: left;
+}
+
+.official-doc__info th:nth-child(3) {
+  width: 16%;
+}
+
+.official-doc__body .col-label {
+  width: 22%;
+}
+
+.official-doc__info .mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+}
+
+.official-doc__note {
+  margin-bottom: 28px;
+}
+
+.official-doc__note-label {
+  margin: 0 0 4px;
+  font-weight: 700;
+}
+
+.official-doc__note-box {
+  min-height: 56px;
+  border: 1px solid #000;
+  padding: 8px 10px;
+  color: #777;
+}
+
+.official-doc__footer {
+  clear: both;
+  overflow: visible;
+}
+
+.official-doc__closing {
+  margin: 0;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.7;
+  word-break: keep-all;
+}
+
+.official-doc__closing strong {
+  font-weight: 700;
+}
+
+.official-doc__date {
+  margin: 28px 0 0;
+  text-align: center;
+  letter-spacing: 0.08em;
+  font-size: 13px;
+}
+
+.official-doc__sign {
+  margin-top: 36px;
+  text-align: right;
+  padding-right: 24px;
+  font-size: 13px;
+}
+
+.official-doc__sign-name {
+  display: inline-block;
+  min-width: 5.5em;
+  padding: 0 8px;
+  border-bottom: 1px solid #000;
+  text-align: center;
+  font-weight: 700;
+}
+
+.official-doc__sign-org {
+  margin: 8px 0 0;
+  font-size: 11px;
+  color: #444;
+}
+
+/* 인쇄 */
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm 10mm;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .official-print-overlay {
+    position: static !important;
+    inset: auto !important;
+    display: block !important;
+    overflow: visible !important;
+    background: transparent !important;
+    padding: 0 !important;
+  }
+
+  .official-print-shell {
+    margin: 0 !important;
+    max-width: none !important;
+    width: 100% !important;
+  }
+
+  .official-print-toolbar {
+    display: none !important;
+  }
+
+  body * {
+    visibility: hidden !important;
+  }
+
+  .official-doc,
+  .official-doc * {
+    visibility: visible !important;
+  }
+
+  .official-doc {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+
+  .official-doc__header {
+    page-break-inside: avoid;
+  }
+
+  .official-doc__title,
+  .official-doc__footer {
+    page-break-inside: avoid;
+  }
+}
