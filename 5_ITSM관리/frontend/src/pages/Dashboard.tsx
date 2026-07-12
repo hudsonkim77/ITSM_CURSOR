@@ -4,9 +4,13 @@ import {
   Bar, BarChart, CartesianGrid, Cell, Legend, Pie, PieChart,
   ResponsiveContainer, Tooltip, XAxis, YAxis,
 } from "recharts";
-import { Boxes, GitBranch, AlertTriangle, Search, TrendingUp, TrendingDown, Network } from "lucide-react";
+import {
+  Boxes, GitBranch, AlertTriangle, Search, TrendingUp, TrendingDown, Network, Moon, Sun,
+} from "lucide-react";
 import { getDashboard, type DashboardData } from "../api";
 import { ICONS, statusChip } from "../lib/ui";
+
+const DARK_KEY = "itsm_dashboard_dark";
 
 function Kpi({ label, value, icon: Icon, tone }: { label: string; value: number; icon: any; tone: string }) {
   return (
@@ -25,10 +29,25 @@ function Kpi({ label, value, icon: Icon, tone }: { label: string; value: number;
 export default function Dashboard() {
   const [data, setData] = useState<DashboardData | null>(null);
   const [err, setErr] = useState("");
+  const [dark, setDark] = useState(() => {
+    try {
+      return localStorage.getItem(DARK_KEY) === "1";
+    } catch {
+      return false;
+    }
+  });
 
   useEffect(() => {
     getDashboard().then(setData).catch((e) => setErr(String(e)));
   }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(DARK_KEY, dark ? "1" : "0");
+    } catch {
+      /* ignore */
+    }
+  }, [dark]);
 
   if (err) return <div className="card p-6 text-rose-600">대시보드 로드 실패: {err}</div>;
   if (!data) return <div className="text-slate-400">불러오는 중…</div>;
@@ -45,14 +64,33 @@ export default function Dashboard() {
     value: s.count,
   }));
 
+  const axisFill = dark ? "#94a3b8" : "#98a2b3";
+  const axisFillY = dark ? "#cbd5e1" : "#475467";
+  const gridStroke = dark ? "#334155" : "#eef1f6";
+  const tipBg = dark ? "#1e293b" : "#ffffff";
+  const tipBorder = dark ? "#334155" : "#e5e9f2";
+  const cursorFill = dark ? "#1e293b" : "#f4f6fb";
+
   return (
-    <div className="space-y-8">
-      <header className="flex items-end justify-between">
+    <div className={`dashboard-scope space-y-8 ${dark ? "dashboard-dark" : ""}`}>
+      <header className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">ITSM 통합관리 대시보드</h1>
           <p className="mt-1 text-sm text-slate-500">구성·변경·장애·문제 현황을 한눈에 관제합니다.</p>
         </div>
-        <span className="chip bg-emerald-100 text-emerald-700">● 실시간 CSV 연동</span>
+        <div className="flex items-center gap-2">
+          <span className="chip bg-emerald-100 text-emerald-700">● 실시간 CSV 연동</span>
+          <button
+            type="button"
+            className="btn-ghost !px-3"
+            onClick={() => setDark((v) => !v)}
+            aria-pressed={dark}
+            title={dark ? "라이트 모드" : "다크 모드"}
+          >
+            {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            {dark ? "라이트" : "다크"}
+          </button>
+        </div>
       </header>
 
       <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -70,16 +108,16 @@ export default function Dashboard() {
           </div>
           <ResponsiveContainer width="100%" height={360}>
             <BarChart data={barData} layout="vertical" margin={{ left: 24, right: 24 }}>
-              <CartesianGrid horizontal={false} stroke="#eef1f6" />
-              <XAxis type="number" tick={{ fontSize: 12, fill: "#98a2b3" }} axisLine={false} tickLine={false} />
+              <CartesianGrid horizontal={false} stroke={gridStroke} />
+              <XAxis type="number" tick={{ fontSize: 12, fill: axisFill }} axisLine={false} tickLine={false} />
               <YAxis
                 type="category" dataKey="label" width={110}
-                tick={{ fontSize: 12, fill: "#475467" }} axisLine={false} tickLine={false}
+                tick={{ fontSize: 12, fill: axisFillY }} axisLine={false} tickLine={false}
               />
               <Tooltip
-                cursor={{ fill: "#f4f6fb" }}
+                cursor={{ fill: cursorFill }}
                 formatter={(v) => [`${v}건`, "자산수"]}
-                contentStyle={{ borderRadius: 12, border: "1px solid #e5e9f2", fontSize: 12 }}
+                contentStyle={{ borderRadius: 12, border: `1px solid ${tipBorder}`, background: tipBg, color: dark ? "#e2e8f0" : "#101828", fontSize: 12 }}
               />
               <Bar dataKey="count" radius={[0, 6, 6, 0]} barSize={16}>
                 {barData.map((_, i) => (
@@ -107,9 +145,9 @@ export default function Dashboard() {
               </Pie>
               <Tooltip
                 formatter={(v) => [`${v}건`, "자산수"]}
-                contentStyle={{ borderRadius: 12, border: "1px solid #e5e9f2", fontSize: 12 }}
+                contentStyle={{ borderRadius: 12, border: `1px solid ${tipBorder}`, background: tipBg, color: dark ? "#e2e8f0" : "#101828", fontSize: 12 }}
               />
-              <Legend verticalAlign="bottom" height={24} iconType="circle" wrapperStyle={{ fontSize: 12 }} />
+              <Legend verticalAlign="bottom" height={24} iconType="circle" wrapperStyle={{ fontSize: 12, color: dark ? "#cbd5e1" : undefined }} />
             </PieChart>
           </ResponsiveContainer>
           <div className="mt-2 grid grid-cols-2 gap-2">

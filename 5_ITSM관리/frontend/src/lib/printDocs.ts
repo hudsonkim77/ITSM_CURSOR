@@ -11,7 +11,7 @@ export const DOMAIN_DOC_TITLES: Record<string, string> = {
   test: "테스트결과보고서",
 };
 
-export const ORG_NAME = "공단";
+export const ORG_NAME = "AI활성화진흥공단";
 export const ORG_DEPT = "정보시스템실";
 export const DRAFTER_STORAGE_KEY = "itsm_drafter_name";
 

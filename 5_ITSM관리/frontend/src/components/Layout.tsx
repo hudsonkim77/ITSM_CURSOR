@@ -33,9 +33,9 @@ export default function Layout() {
       }`}
     >
       <div className="flex items-center gap-2 px-5 py-5">
-        <img src="/logo-mark.png" alt="logo" className="h-9 w-9 rounded-lg object-contain" />
+        <img src="/logo-mark.png" alt="logo" className="h-9 w-9 shrink-0 rounded-lg object-contain" />
         <div className="min-w-0 flex-1 leading-tight">
-          <div className="text-sm font-bold text-slate-900">ITSM<span className="text-brand-500">·CURSOR</span></div>
+          <div className="truncate text-sm font-bold text-slate-900">AI활성화진흥공단</div>
           <div className="text-[11px] text-slate-400">표준운영관리 대시보드</div>
         </div>
         <button
@@ -111,7 +111,7 @@ export default function Layout() {
           >
             <Menu className="h-5 w-5" />
           </button>
-          <div className="text-sm font-bold text-slate-900">ITSM<span className="text-brand-500">·CURSOR</span></div>
+          <div className="min-w-0 truncate text-sm font-bold text-slate-900">AI활성화진흥공단</div>
         </div>
         <div
           key={location.pathname}

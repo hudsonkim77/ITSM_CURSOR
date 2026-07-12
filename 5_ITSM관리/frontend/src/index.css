@@ -59,6 +59,84 @@ body {
   }
 }
 
+/* 대시보드 전용 다크모드 (레이아웃/다른 페이지에는 영향 없음) */
+.dashboard-dark {
+  color-scheme: dark;
+  margin: -1.5rem -1rem;
+  padding: 1.5rem 1rem;
+  background: #0f172a;
+  border-radius: 0;
+  min-height: calc(100vh - 2rem);
+}
+
+@media (min-width: 640px) {
+  .dashboard-dark {
+    margin: -2rem -2rem;
+    padding: 2rem;
+  }
+}
+
+.dashboard-dark .card {
+  background: #1e293b;
+  border-color: #334155;
+  box-shadow: none;
+}
+
+.dashboard-dark h1,
+.dashboard-dark h2,
+.dashboard-dark .text-slate-900 {
+  color: #f1f5f9 !important;
+}
+
+.dashboard-dark .text-slate-700 {
+  color: #cbd5e1 !important;
+}
+
+.dashboard-dark .text-slate-500,
+.dashboard-dark .text-slate-400 {
+  color: #94a3b8 !important;
+}
+
+.dashboard-dark .border-slate-100,
+.dashboard-dark .border-slate-200 {
+  border-color: #334155 !important;
+}
+
+.dashboard-dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #334155;
+}
+
+.dashboard-dark thead,
+.dashboard-dark .bg-slate-50 {
+  background: #0f172a !important;
+}
+
+.dashboard-dark tr:hover,
+.dashboard-dark .hover\:bg-slate-50\/70:hover {
+  background: rgba(51, 65, 85, 0.45) !important;
+}
+
+.dashboard-dark .btn-ghost {
+  background: #334155;
+  color: #e2e8f0;
+}
+
+.dashboard-dark .btn-ghost:hover {
+  background: #475569;
+}
+
+.dashboard-dark .bg-emerald-50 {
+  background: rgba(16, 185, 129, 0.12) !important;
+}
+
+.dashboard-dark .bg-rose-50 {
+  background: rgba(244, 63, 94, 0.12) !important;
+}
+
+.dashboard-dark .bg-emerald-100 {
+  background: rgba(16, 185, 129, 0.18) !important;
+}
+
 /* ── 공단 공통 양식 문서 ── */
 .official-doc {
   box-sizing: border-box;
