@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI활성화진흥공단 · ITSM 포털 바로가기</title>
+  <style>
+    :root {
+      --bg: #f4f6fb;
+      --card: #fff;
+      --text: #101828;
+      --muted: #667085;
+      --brand: #3a5eef;
+      --line: #e5e9f2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+      background: linear-gradient(160deg, #eef2ff 0%, #f4f6fb 45%, #e8eefc 100%);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .wrap {
+      width: 100%;
+      max-width: 560px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 28px 28px 24px;
+      box-shadow: 0 16px 40px rgba(16, 24, 40, 0.08);
+    }
+    h1 {
+      margin: 0 0 6px;
+      font-size: 1.35rem;
+      letter-spacing: -0.02em;
+    }
+    .sub {
+      margin: 0 0 22px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+    .badge {
+      display: inline-block;
+      margin-bottom: 14px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: var(--brand);
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    a.btn {
+      display: block;
+      text-decoration: none;
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      transition: border-color .15s, background .15s;
+    }
+    a.btn:hover {
+      border-color: #b8c7ff;
+      background: #f8faff;
+    }
+    a.btn strong {
+      display: block;
+      font-size: 0.98rem;
+      margin-bottom: 2px;
+    }
+    a.btn span {
+      color: var(--muted);
+      font-size: 0.8rem;
+      word-break: break-all;
+    }
+    a.btn.primary {
+      background: var(--brand);
+      border-color: var(--brand);
+      color: #fff;
+    }
+    a.btn.primary span { color: #dbe4ff; }
+    .foot {
+      margin-top: 16px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="badge">과제 제출용 · Windows/맥 공통</div>
+    <h1>AI활성화진흥공단 ITSM 포털</h1>
+    <p class="sub">아래 링크를 클릭하면 브라우저에서 바로 이동합니다. Google Drive에서 이 HTML을 내려받은 뒤 실행해도 됩니다.</p>
+
+    <a class="btn primary" href="https://github.com/hudsonkim77/ITSM_CURSOR" target="_blank" rel="noopener">
+      <strong>① GitHub 소스 저장소 (온라인)</strong>
+      <span>https://github.com/hudsonkim77/ITSM_CURSOR</span>
+    </a>
+
+    <a class="btn" href="https://hudsonkim77.github.io/ITSM_CURSOR/" target="_blank" rel="noopener">
+      <strong>② 온라인 포털 안내 페이지 (GitHub Pages)</strong>
+      <span>https://hudsonkim77.github.io/ITSM_CURSOR/</span>
+    </a>
+
+    <a class="btn" href="http://localhost:8000/" target="_blank" rel="noopener">
+      <strong>③ 로컬 포털 (프로덕션 :8000)</strong>
+      <span>서버 기동 후 사용 · http://localhost:8000/</span>
+    </a>
+
+    <a class="btn" href="http://localhost:5173/" target="_blank" rel="noopener">
+      <strong>④ 로컬 포털 (개발 :5173)</strong>
+      <span>Vite 개발 서버 · http://localhost:5173/</span>
+    </a>
+
+    <p class="foot">
+      · Windows: <code>*.url</code> 더블클릭 또는 이 HTML / <code>ITSM포털_열기_Windows.bat</code><br />
+      · 로컬 기동: 저장소 <code>5_ITSM관리/scripts/prod.sh</code> (또는 README 참고)<br />
+      · 기관: AI활성화진흥공단 · 시스템: ITSM_CURSOR
+    </p>
+  </div>
+</body>
+</html>
