@@ -11,13 +11,13 @@
   <div class="app">
     
 <aside class="sidebar" id="sidebar">
-  <div class="brand">
+  <a class="brand" href="/ITSM_CURSOR/index.html" title="대시보드로 이동">
     <img src="/ITSM_CURSOR/assets/logo-mark.png" alt="logo" />
     <div>
       <div class="brand-title">AI활성화진흥공단</div>
       <div class="brand-sub">표준운영관리 대시보드</div>
     </div>
-  </div>
+  </a>
   <nav class="nav">
     <a class="nav-link active" href="/ITSM_CURSOR/index.html"><span>대시보드</span></a>
     <a class="nav-link" href="/ITSM_CURSOR/wbs.html"><span>WBS 진척</span><span class="badge">100%</span></a>
@@ -33,17 +33,21 @@
     <div class="main-wrap">
       <header class="topbar">
         <button type="button" class="menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
-        <div class="topbar-title">AI활성화진흥공단</div>
+        <a class="topbar-title" href="/ITSM_CURSOR/index.html">AI활성화진흥공단</a>
         <span class="chip">온라인 포털</span>
       </header>
-      <main class="content">
+      <main class="content" id="main-content">
         
+<div id="dash-root" class="dashboard-scope">
 <header class="page-head">
   <div>
     <h1>ITSM 통합관리 대시보드</h1>
     <p class="sub">구성·변경·장애·문제 현황을 한눈에 관제합니다.</p>
   </div>
-  <span class="chip ok">● 온라인 CSV 스냅샷</span>
+  <div class="head-actions">
+    <span class="chip ok">● 온라인 CSV 스냅샷</span>
+    <button type="button" class="btn-theme" id="theme-toggle" aria-pressed="false">다크</button>
+  </div>
 </header>
 <section class="kpis"><div class="card kpi"><label>총 자산 수</label><div class="v">312</div></div><div class="card kpi"><label>변경 건수</label><div class="v">29</div></div><div class="card kpi"><label>장애 건수</label><div class="v">2</div></div><div class="card kpi"><label>문제 건수</label><div class="v">1</div></div></section>
 <section class="grid2">
@@ -64,11 +68,32 @@
     <tbody><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_009</a></td><td>초기 베이스라인 정의서 v1.1(DDL 개정판) 발행</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_008</a></td><td>통합 초기 베이스라인 v1.0 확정 및 자산-형상 DB 연결 스키마 개선</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_007</a></td><td>실데이터 없던 7개 관리 화면에 가상 예시 데이터 1건씩 등록</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_006</a></td><td>필드값 없는 변경 티켓 9건 정리(CI·CHANGE_CI_MAP 참조 포함 일괄 정리)</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_005</a></td><td>경영관리에 구축산출물 폴더 신설(테스트결과서·프로그램명세서·DB명세서·아키텍처결과서·표준정의서 5종 PDF)</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_004</a></td><td>전체 관리 페이지(장애·문제·배포·요청·SLA·형상·운영상태·이벤트·테스트·연계·백업)에 변경관리와 동일한 CRUD 화면 구현</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_003</a></td><td>변경요청 조회 표의 컬럼 헤더를 한글로 치환</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_002</a></td><td>ERD 페이지 전체 폭 활용, 컬럼명 한글(영어) 표기, 확대/축소·드래그 이동 인터랙션 추가</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr></tbody>
   </table></div>
 </section>
-<p class="foot">생성: 2026-07-12 23:39 · 읽기 전용 공개 뷰 · CRUD는 로컬 서버에서 이용</p>
+<p class="foot">생성: 2026-07-12 23:47 · 읽기 전용 공개 뷰 · CRUD는 로컬 서버에서 이용</p>
+</div>
 
       </main>
     </div>
   </div>
   <div class="backdrop" onclick="document.getElementById('sidebar').classList.remove('open')"></div>
+  
+<script>
+(function () {
+  var KEY = 'itsm_dashboard_dark';
+  var root = document.getElementById('dash-root');
+  var btn = document.getElementById('theme-toggle');
+  if (!root || !btn) return;
+  function apply(dark) {
+    root.classList.toggle('dashboard-dark', dark);
+    btn.textContent = dark ? '라이트' : '다크';
+    btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+    try { localStorage.setItem(KEY, dark ? '1' : '0'); } catch (e) {}
+  }
+  var dark = false;
+  try { dark = localStorage.getItem(KEY) === '1'; } catch (e) {}
+  apply(dark);
+  btn.addEventListener('click', function () { apply(!root.classList.contains('dashboard-dark')); });
+})();
+</script>
+
 </body>
 </html>

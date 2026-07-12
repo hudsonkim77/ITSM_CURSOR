@@ -88,13 +88,13 @@ def shell(active: str, domain_counts: dict[str, int], wbs_pct: int) -> str:
 
     return f"""
 <aside class="sidebar" id="sidebar">
-  <div class="brand">
+  <a class="brand" href="{href('/index.html')}" title="대시보드로 이동">
     <img src="{href('/assets/logo-mark.png')}" alt="logo" />
     <div>
       <div class="brand-title">AI활성화진흥공단</div>
       <div class="brand-sub">표준운영관리 대시보드</div>
     </div>
-  </div>
+  </a>
   <nav class="nav">
     {nav('/index.html', '대시보드', 'home')}
     {nav('/wbs.html', 'WBS 진척', 'wbs', f'{wbs_pct}%')}
@@ -109,7 +109,7 @@ def shell(active: str, domain_counts: dict[str, int], wbs_pct: int) -> str:
 """
 
 
-def layout(title: str, active: str, body: str, domain_counts: dict[str, int], wbs_pct: int) -> str:
+def layout(title: str, active: str, body: str, domain_counts: dict[str, int], wbs_pct: int, extra_script: str = "") -> str:
     return f"""<!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -125,17 +125,40 @@ def layout(title: str, active: str, body: str, domain_counts: dict[str, int], wb
     <div class="main-wrap">
       <header class="topbar">
         <button type="button" class="menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
-        <div class="topbar-title">AI활성화진흥공단</div>
+        <a class="topbar-title" href="{href('/index.html')}">AI활성화진흥공단</a>
         <span class="chip">온라인 포털</span>
       </header>
-      <main class="content">
+      <main class="content" id="main-content">
         {body}
       </main>
     </div>
   </div>
   <div class="backdrop" onclick="document.getElementById('sidebar').classList.remove('open')"></div>
+  {extra_script}
 </body>
 </html>
+"""
+
+
+DARK_SCRIPT = """
+<script>
+(function () {
+  var KEY = 'itsm_dashboard_dark';
+  var root = document.getElementById('dash-root');
+  var btn = document.getElementById('theme-toggle');
+  if (!root || !btn) return;
+  function apply(dark) {
+    root.classList.toggle('dashboard-dark', dark);
+    btn.textContent = dark ? '라이트' : '다크';
+    btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+    try { localStorage.setItem(KEY, dark ? '1' : '0'); } catch (e) {}
+  }
+  var dark = false;
+  try { dark = localStorage.getItem(KEY) === '1'; } catch (e) {}
+  apply(dark);
+  btn.addEventListener('click', function () { apply(!root.classList.contains('dashboard-dark')); });
+})();
+</script>
 """
 
 
@@ -195,12 +218,16 @@ def build_dashboard(domain_counts: dict[str, int]) -> str:
     )
 
     return f"""
+<div id="dash-root" class="dashboard-scope">
 <header class="page-head">
   <div>
     <h1>ITSM 통합관리 대시보드</h1>
     <p class="sub">구성·변경·장애·문제 현황을 한눈에 관제합니다.</p>
   </div>
-  <span class="chip ok">● 온라인 CSV 스냅샷</span>
+  <div class="head-actions">
+    <span class="chip ok">● 온라인 CSV 스냅샷</span>
+    <button type="button" class="btn-theme" id="theme-toggle" aria-pressed="false">다크</button>
+  </div>
 </header>
 <section class="kpis">{kpi_html}</section>
 <section class="grid2">
@@ -222,6 +249,7 @@ def build_dashboard(domain_counts: dict[str, int]) -> str:
   </table></div>
 </section>
 <p class="foot">생성: {esc(datetime.now().strftime("%Y-%m-%d %H:%M"))} · 읽기 전용 공개 뷰 · CRUD는 로컬 서버에서 이용</p>
+</div>
 """
 
 
@@ -331,13 +359,16 @@ CSS = """
 body { margin: 0; font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; background: var(--bg); color: var(--text); }
 .app { min-height: 100vh; }
 .sidebar {
-  position: fixed; inset: 0 auto 0 0; width: 260px; background: var(--sidebar);
+  position: fixed; top: 0; left: 0; bottom: 0; width: 260px; background: var(--sidebar);
   border-right: 1px solid var(--line); display: flex; flex-direction: column; z-index: 40;
-  transform: translateX(0);
 }
-.brand { display: flex; gap: 10px; align-items: center; padding: 18px 18px 14px; }
+a.brand {
+  display: flex; gap: 10px; align-items: center; padding: 18px 18px 14px;
+  text-decoration: none; color: inherit; border-bottom: 1px solid transparent;
+}
+a.brand:hover { background: #f8fafc; }
 .brand img { width: 36px; height: 36px; border-radius: 10px; object-fit: contain; }
-.brand-title { font-size: 14px; font-weight: 800; }
+.brand-title { font-size: 14px; font-weight: 800; color: var(--text); }
 .brand-sub { font-size: 11px; color: #98a2b3; }
 .nav { flex: 1; overflow: auto; padding: 0 10px 20px; }
 .nav-section { padding: 14px 12px 6px; font-size: 11px; font-weight: 700; color: #98a2b3; letter-spacing: .04em; }
@@ -350,28 +381,39 @@ body { margin: 0; font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-seri
 .nav-link .badge { background: #f2f4f7; color: #667085; border-radius: 999px; padding: 1px 8px; font-size: 11px; }
 .nav-link.active .badge { background: rgba(255,255,255,.2); color: #fff; }
 .sidebar-foot { border-top: 1px solid var(--line); padding: 12px 18px; font-size: 11px; color: #98a2b3; }
-.main-wrap { margin-left: 260px; min-height: 100vh; }
+.main-wrap { margin-left: 260px; min-height: 100vh; width: calc(100% - 260px); }
 .topbar {
   display: none; position: sticky; top: 0; z-index: 20; background: rgba(255,255,255,.92);
   backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); padding: 10px 14px; align-items: center; gap: 10px;
 }
 .menu-btn { border: 0; background: #f2f4f7; border-radius: 10px; padding: 8px 10px; font-size: 16px; }
-.topbar-title { font-weight: 800; font-size: 14px; flex: 1; }
-.content { max-width: 1100px; margin: 0 auto; padding: 28px 24px 48px; }
+.topbar-title { font-weight: 800; font-size: 14px; flex: 1; color: inherit; text-decoration: none; }
+.content {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 28px 32px 48px;
+}
 .page-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-end; margin-bottom: 20px; flex-wrap: wrap; }
+.head-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.btn-theme {
+  border: 0; border-radius: 12px; padding: 8px 14px; font-size: 13px; font-weight: 700;
+  background: #f2f4f7; color: #344054; cursor: pointer;
+}
+.btn-theme:hover { background: #e4e7ec; }
 h1 { margin: 0; font-size: 26px; }
 h2 { margin: 0 0 12px; font-size: 16px; }
 .sub { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
 .chip { display: inline-flex; padding: 4px 10px; border-radius: 999px; background: #eef2ff; color: var(--brand); font-size: 12px; font-weight: 700; }
 .chip.ok { background: #d1fae5; color: #047857; }
 .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; }
-.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 16px; }
 .kpi label { font-size: 13px; color: var(--muted); }
 .kpi .v { margin-top: 8px; font-size: 30px; font-weight: 800; }
 .grid2 { display: grid; grid-template-columns: 1.4fr 1fr; gap: 14px; margin-bottom: 18px; }
 .lists { list-style: none; margin: 0; padding: 0; }
 .lists li { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
-.domains { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; margin-bottom: 18px; }
+.domains { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-bottom: 18px; }
 .dom { text-decoration: none; color: inherit; transition: border-color .15s; }
 .dom:hover { border-color: #b8c7ff; }
 .dom .t { font-size: 13px; color: var(--muted); }
@@ -400,13 +442,34 @@ th { background: #f8fafc; color: var(--muted); font-size: 11px; }
 .filelist { margin: 0; padding-left: 18px; line-height: 1.8; font-size: 13px; }
 .filelist a { color: var(--brand); }
 .backdrop { display: none; }
+
+/* 대시보드 다크모드 */
+.dashboard-dark { color-scheme: dark; }
+.dashboard-dark .card { background: #1e293b; border-color: #334155; }
+.dashboard-dark h1, .dashboard-dark h2, .dashboard-dark .kpi .v, .dashboard-dark .dom .c { color: #f1f5f9; }
+.dashboard-dark .sub, .dashboard-dark .kpi label, .dashboard-dark .dom .t,
+.dashboard-dark .empty, .dashboard-dark .note, .dashboard-dark .foot, .dashboard-dark .lists li span { color: #94a3b8; }
+.dashboard-dark .lists li, .dashboard-dark th, .dashboard-dark td, .dashboard-dark .card-head { border-color: #334155; }
+.dashboard-dark th { background: #0f172a; color: #94a3b8; }
+.dashboard-dark .btn-theme { background: #334155; color: #e2e8f0; }
+.dashboard-dark .btn-theme:hover { background: #475569; }
+.dashboard-dark .chip.ok { background: rgba(16,185,129,.18); color: #6ee7b7; }
+.dashboard-dark .mini.ok { background: rgba(16,185,129,.12); }
+.dashboard-dark .mini.bad { background: rgba(244,63,94,.12); }
+
+@media (max-width: 1100px) {
+  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 @media (max-width: 960px) {
   .sidebar { transform: translateX(-105%); transition: transform .2s; }
   .sidebar.open { transform: translateX(0); }
-  .main-wrap { margin-left: 0; }
+  .main-wrap { margin-left: 0; width: 100%; }
   .topbar { display: flex; }
-  .kpis, .grid2 { grid-template-columns: 1fr 1fr; }
-  .sidebar.open ~ .backdrop, body:has(.sidebar.open) .backdrop { display: block; position: fixed; inset: 0; background: rgba(15,23,42,.35); z-index: 30; }
+  .grid2 { grid-template-columns: 1fr 1fr; }
+  .content { padding: 20px 16px 40px; }
+  body:has(.sidebar.open) .backdrop {
+    display: block; position: fixed; inset: 0; background: rgba(15,23,42,.35); z-index: 30;
+  }
 }
 @media (max-width: 640px) {
   .kpis, .grid2 { grid-template-columns: 1fr; }
@@ -416,7 +479,6 @@ th { background: #f8fafc; color: var(--muted); font-size: 11px; }
 
 def main():
     if DOCS.exists():
-        # keep only regenerate; wipe generated html pages carefully
         for p in DOCS.glob("*.html"):
             p.unlink()
         ddir = DOCS / "d"
@@ -436,7 +498,7 @@ def main():
 
     wbs_pct = 100
     (DOCS / "index.html").write_text(
-        layout("대시보드", "home", build_dashboard(domain_counts), domain_counts, wbs_pct),
+        layout("대시보드", "home", build_dashboard(domain_counts), domain_counts, wbs_pct, DARK_SCRIPT),
         encoding="utf-8",
     )
     ddir = DOCS / "d"
@@ -456,7 +518,6 @@ def main():
         layout("경영관리", "management", build_management(), domain_counts, wbs_pct), encoding="utf-8"
     )
 
-    # shortcut
     (ROOT / "제출용_바로가기" / "ITSM_CURSOR_대시보드_온라인.url").write_text(
         "[InternetShortcut]\nURL=https://hudsonkim77.github.io/ITSM_CURSOR/\n",
         encoding="utf-8",
