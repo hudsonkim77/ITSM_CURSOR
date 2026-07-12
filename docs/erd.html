@@ -6,12 +6,21 @@
   <title>ERD · AI활성화진흥공단</title>
   <link rel="icon" href="/ITSM_CURSOR/assets/logo-mark.png" />
   <link rel="stylesheet" href="/ITSM_CURSOR/assets/portal.css" />
+  <script>
+    (function () {
+      try {
+        if (localStorage.getItem('itsm_dashboard_dark') === '1') {
+          document.documentElement.classList.add('theme-ops');
+        }
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body>
   <div class="app">
     
 <aside class="sidebar" id="sidebar">
-  <a class="brand" href="/ITSM_CURSOR/index.html" title="대시보드로 이동">
+  <a class="brand" href="/ITSM_CURSOR/" title="대시보드로 이동">
     <img src="/ITSM_CURSOR/assets/logo-mark.png" alt="logo" />
     <div>
       <div class="brand-title">AI활성화진흥공단</div>
@@ -19,7 +28,7 @@
     </div>
   </a>
   <nav class="nav">
-    <a class="nav-link" href="/ITSM_CURSOR/index.html"><span>대시보드</span></a>
+    <a class="nav-link" href="/ITSM_CURSOR/"><span>대시보드</span></a>
     <a class="nav-link" href="/ITSM_CURSOR/wbs.html"><span>WBS 진척</span><span class="badge">100%</span></a>
     <div class="nav-section">운영 도메인</div>
     <a class="nav-link" href="/ITSM_CURSOR/d/change.html"><span>변경관리</span><span class="badge">29</span></a><a class="nav-link" href="/ITSM_CURSOR/d/incident.html"><span>장애관리</span><span class="badge">2</span></a><a class="nav-link" href="/ITSM_CURSOR/d/config.html"><span>구성관리</span><span class="badge">312</span></a><a class="nav-link" href="/ITSM_CURSOR/d/problem.html"><span>문제관리</span><span class="badge">1</span></a><a class="nav-link" href="/ITSM_CURSOR/d/deploy.html"><span>배포관리</span><span class="badge">5</span></a><a class="nav-link" href="/ITSM_CURSOR/d/request.html"><span>요청관리</span><span class="badge">1</span></a><a class="nav-link" href="/ITSM_CURSOR/d/sla.html"><span>서비스수준관리</span><span class="badge">1</span></a><a class="nav-link" href="/ITSM_CURSOR/d/baseline.html"><span>형상관리</span><span class="badge">2</span></a><a class="nav-link" href="/ITSM_CURSOR/d/ops.html"><span>운영상태관리</span><span class="badge">1</span></a><a class="nav-link" href="/ITSM_CURSOR/d/event.html"><span>이벤트관리</span><span class="badge">1</span></a><a class="nav-link" href="/ITSM_CURSOR/d/test.html"><span>테스트관리</span><span class="badge">2</span></a><a class="nav-link" href="/ITSM_CURSOR/d/interface.html"><span>연계관리</span><span class="badge">1</span></a><a class="nav-link" href="/ITSM_CURSOR/d/backup.html"><span>백업관리</span><span class="badge">1</span></a>
@@ -27,14 +36,17 @@
     <a class="nav-link active" href="/ITSM_CURSOR/erd.html"><span>ERD</span></a>
     <a class="nav-link" href="/ITSM_CURSOR/management.html"><span>경영관리</span></a>
   </nav>
-  <div class="sidebar-foot">대한민국 공공기관 표준운영관리 · ITIL v4 기반</div>
+  <div class="sidebar-foot">
+    <button type="button" class="btn-theme btn-theme-block" id="theme-toggle" aria-pressed="false">다크</button>
+    <div class="sidebar-foot-note">대한민국 공공기관 표준운영관리 · ITIL v4 기반</div>
+  </div>
 </aside>
 
     <div class="main-wrap">
       <header class="topbar">
         <button type="button" class="menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
-        <a class="topbar-title" href="/ITSM_CURSOR/index.html">AI활성화진흥공단</a>
-        <span class="chip">온라인 포털</span>
+        <a class="topbar-title" href="/ITSM_CURSOR/">AI활성화진흥공단</a>
+        <button type="button" class="btn-theme" id="theme-toggle-mobile" aria-pressed="false">다크</button>
       </header>
       <main class="content" id="main-content">
         
@@ -144,6 +156,34 @@ erDiagram
     </div>
   </div>
   <div class="backdrop" onclick="document.getElementById('sidebar').classList.remove('open')"></div>
+  
+<script>
+(function () {
+  var KEY = 'itsm_dashboard_dark';
+  var btns = [
+    document.getElementById('theme-toggle'),
+    document.getElementById('theme-toggle-mobile')
+  ].filter(Boolean);
+  function apply(dark) {
+    document.documentElement.classList.toggle('theme-ops', dark);
+    document.body.classList.toggle('theme-ops', dark);
+    btns.forEach(function (btn) {
+      btn.textContent = dark ? '라이트' : '다크';
+      btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+    });
+    try { localStorage.setItem(KEY, dark ? '1' : '0'); } catch (e) {}
+  }
+  var dark = false;
+  try { dark = localStorage.getItem(KEY) === '1'; } catch (e) {}
+  apply(dark);
+  btns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      apply(!document.documentElement.classList.contains('theme-ops'));
+    });
+  });
+})();
+</script>
+
   
 </body>
 </html>

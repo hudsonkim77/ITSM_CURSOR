@@ -6,12 +6,21 @@
   <title>대시보드 · AI활성화진흥공단</title>
   <link rel="icon" href="/ITSM_CURSOR/assets/logo-mark.png" />
   <link rel="stylesheet" href="/ITSM_CURSOR/assets/portal.css" />
+  <script>
+    (function () {
+      try {
+        if (localStorage.getItem('itsm_dashboard_dark') === '1') {
+          document.documentElement.classList.add('theme-ops');
+        }
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body>
   <div class="app">
     
 <aside class="sidebar" id="sidebar">
-  <a class="brand" href="/ITSM_CURSOR/index.html" title="대시보드로 이동">
+  <a class="brand" href="/ITSM_CURSOR/" title="대시보드로 이동">
     <img src="/ITSM_CURSOR/assets/logo-mark.png" alt="logo" />
     <div>
       <div class="brand-title">AI활성화진흥공단</div>
@@ -19,7 +28,7 @@
     </div>
   </a>
   <nav class="nav">
-    <a class="nav-link active" href="/ITSM_CURSOR/index.html"><span>대시보드</span></a>
+    <a class="nav-link active" href="/ITSM_CURSOR/"><span>대시보드</span></a>
     <a class="nav-link" href="/ITSM_CURSOR/wbs.html"><span>WBS 진척</span><span class="badge">100%</span></a>
     <div class="nav-section">운영 도메인</div>
     <a class="nav-link" href="/ITSM_CURSOR/d/change.html"><span>변경관리</span><span class="badge">29</span></a><a class="nav-link" href="/ITSM_CURSOR/d/incident.html"><span>장애관리</span><span class="badge">2</span></a><a class="nav-link" href="/ITSM_CURSOR/d/config.html"><span>구성관리</span><span class="badge">312</span></a><a class="nav-link" href="/ITSM_CURSOR/d/problem.html"><span>문제관리</span><span class="badge">1</span></a><a class="nav-link" href="/ITSM_CURSOR/d/deploy.html"><span>배포관리</span><span class="badge">5</span></a><a class="nav-link" href="/ITSM_CURSOR/d/request.html"><span>요청관리</span><span class="badge">1</span></a><a class="nav-link" href="/ITSM_CURSOR/d/sla.html"><span>서비스수준관리</span><span class="badge">1</span></a><a class="nav-link" href="/ITSM_CURSOR/d/baseline.html"><span>형상관리</span><span class="badge">2</span></a><a class="nav-link" href="/ITSM_CURSOR/d/ops.html"><span>운영상태관리</span><span class="badge">1</span></a><a class="nav-link" href="/ITSM_CURSOR/d/event.html"><span>이벤트관리</span><span class="badge">1</span></a><a class="nav-link" href="/ITSM_CURSOR/d/test.html"><span>테스트관리</span><span class="badge">2</span></a><a class="nav-link" href="/ITSM_CURSOR/d/interface.html"><span>연계관리</span><span class="badge">1</span></a><a class="nav-link" href="/ITSM_CURSOR/d/backup.html"><span>백업관리</span><span class="badge">1</span></a>
@@ -27,14 +36,17 @@
     <a class="nav-link" href="/ITSM_CURSOR/erd.html"><span>ERD</span></a>
     <a class="nav-link" href="/ITSM_CURSOR/management.html"><span>경영관리</span></a>
   </nav>
-  <div class="sidebar-foot">대한민국 공공기관 표준운영관리 · ITIL v4 기반</div>
+  <div class="sidebar-foot">
+    <button type="button" class="btn-theme btn-theme-block" id="theme-toggle" aria-pressed="false">다크</button>
+    <div class="sidebar-foot-note">대한민국 공공기관 표준운영관리 · ITIL v4 기반</div>
+  </div>
 </aside>
 
     <div class="main-wrap">
       <header class="topbar">
         <button type="button" class="menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
-        <a class="topbar-title" href="/ITSM_CURSOR/index.html">AI활성화진흥공단</a>
-        <span class="chip">온라인 포털</span>
+        <a class="topbar-title" href="/ITSM_CURSOR/">AI활성화진흥공단</a>
+        <button type="button" class="btn-theme" id="theme-toggle-mobile" aria-pressed="false">다크</button>
       </header>
       <main class="content" id="main-content">
         
@@ -46,7 +58,6 @@
   </div>
   <div class="head-actions">
     <span class="chip ok">● 온라인 CSV 스냅샷</span>
-    <button type="button" class="btn-theme" id="theme-toggle" aria-pressed="false">다크</button>
   </div>
 </header>
 <section class="kpis"><div class="card kpi"><label>총 자산 수</label><div class="v">312</div></div><div class="card kpi"><label>변경 건수</label><div class="v">29</div></div><div class="card kpi"><label>장애 건수</label><div class="v">2</div></div><div class="card kpi"><label>문제 건수</label><div class="v">1</div></div></section>
@@ -68,7 +79,7 @@
     <tbody><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_009</a></td><td>초기 베이스라인 정의서 v1.1(DDL 개정판) 발행</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_008</a></td><td>통합 초기 베이스라인 v1.0 확정 및 자산-형상 DB 연결 스키마 개선</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_007</a></td><td>실데이터 없던 7개 관리 화면에 가상 예시 데이터 1건씩 등록</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_006</a></td><td>필드값 없는 변경 티켓 9건 정리(CI·CHANGE_CI_MAP 참조 포함 일괄 정리)</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_005</a></td><td>경영관리에 구축산출물 폴더 신설(테스트결과서·프로그램명세서·DB명세서·아키텍처결과서·표준정의서 5종 PDF)</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_004</a></td><td>전체 관리 페이지(장애·문제·배포·요청·SLA·형상·운영상태·이벤트·테스트·연계·백업)에 변경관리와 동일한 CRUD 화면 구현</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_003</a></td><td>변경요청 조회 표의 컬럼 헤더를 한글로 치환</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_002</a></td><td>ERD 페이지 전체 폭 활용, 컬럼명 한글(영어) 표기, 확대/축소·드래그 이동 인터랙션 추가</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr></tbody>
   </table></div>
 </section>
-<p class="foot">생성: 2026-07-12 23:47 · 읽기 전용 공개 뷰 · CRUD는 로컬 서버에서 이용</p>
+<p class="foot">생성: 2026-07-12 23:52 · 읽기 전용 공개 뷰 · CRUD는 로컬 서버에서 이용</p>
 </div>
 
       </main>
@@ -79,21 +90,30 @@
 <script>
 (function () {
   var KEY = 'itsm_dashboard_dark';
-  var root = document.getElementById('dash-root');
-  var btn = document.getElementById('theme-toggle');
-  if (!root || !btn) return;
+  var btns = [
+    document.getElementById('theme-toggle'),
+    document.getElementById('theme-toggle-mobile')
+  ].filter(Boolean);
   function apply(dark) {
-    root.classList.toggle('dashboard-dark', dark);
-    btn.textContent = dark ? '라이트' : '다크';
-    btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+    document.documentElement.classList.toggle('theme-ops', dark);
+    document.body.classList.toggle('theme-ops', dark);
+    btns.forEach(function (btn) {
+      btn.textContent = dark ? '라이트' : '다크';
+      btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+    });
     try { localStorage.setItem(KEY, dark ? '1' : '0'); } catch (e) {}
   }
   var dark = false;
   try { dark = localStorage.getItem(KEY) === '1'; } catch (e) {}
   apply(dark);
-  btn.addEventListener('click', function () { apply(!root.classList.contains('dashboard-dark')); });
+  btns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      apply(!document.documentElement.classList.contains('theme-ops'));
+    });
+  });
 })();
 </script>
 
+  
 </body>
 </html>
