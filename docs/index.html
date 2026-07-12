@@ -3,108 +3,124 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AI활성화진흥공단 · ITSM 표준운영관리 포털</title>
-  <meta name="description" content="AI활성화진흥공단 ITSM_CURSOR 포털 온라인 안내" />
+  <title>AI활성화진흥공단 · ITSM 통합관리 대시보드</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
     :root {
-      --bg: #0f172a;
-      --panel: #1e293b;
-      --text: #f1f5f9;
-      --muted: #94a3b8;
-      --brand: #5b84fa;
-      --line: #334155;
+      --bg:#f4f6fb; --card:#fff; --text:#101828; --muted:#667085; --line:#e5e9f2; --brand:#3a5eef;
     }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
-      background:
-        radial-gradient(1200px 600px at 10% -10%, #1e3a8a55, transparent),
-        radial-gradient(900px 500px at 100% 0%, #0ea5e933, transparent),
-        var(--bg);
-      color: var(--text);
-      padding: 32px 20px 48px;
-    }
-    .wrap { max-width: 720px; margin: 0 auto; }
-    .org {
-      font-size: 0.85rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      color: var(--brand);
-      margin-bottom: 8px;
-    }
-    h1 {
-      margin: 0 0 10px;
-      font-size: clamp(1.5rem, 3vw, 2rem);
-      line-height: 1.25;
-    }
-    .lead {
-      margin: 0 0 28px;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-    .grid { display: grid; gap: 12px; }
-    a.card {
-      display: block;
-      text-decoration: none;
-      color: inherit;
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 16px 18px;
-      transition: border-color .15s, transform .15s;
-    }
-    a.card:hover { border-color: var(--brand); transform: translateY(-1px); }
-    a.card strong { display: block; margin-bottom: 4px; font-size: 1.02rem; }
-    a.card span { color: var(--muted); font-size: 0.84rem; word-break: break-all; }
-    .note {
-      margin-top: 24px;
-      padding: 14px 16px;
-      border-radius: 12px;
-      border: 1px dashed var(--line);
-      color: var(--muted);
-      font-size: 0.86rem;
-      line-height: 1.55;
-    }
-    code {
-      font-family: ui-monospace, Consolas, monospace;
-      font-size: 0.84em;
-      color: #c7d2fe;
-    }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:"Malgun Gothic","Apple SD Gothic Neo",sans-serif; background:var(--bg); color:var(--text); }
+    .wrap { max-width:1100px; margin:0 auto; padding:28px 20px 48px; }
+    .org { font-size:13px; font-weight:700; color:var(--brand); margin-bottom:4px; }
+    h1 { margin:0; font-size:26px; }
+    .sub { margin:6px 0 0; color:var(--muted); font-size:14px; }
+    header { display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px; align-items:flex-end; margin-bottom:22px; }
+    .chip { display:inline-flex; align-items:center; padding:4px 10px; border-radius:999px; background:#d1fae5; color:#047857; font-size:12px; font-weight:600; }
+    .kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:18px; }
+    @media (max-width:900px) { .kpis { grid-template-columns:repeat(2,1fr); } }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px 18px; box-shadow:0 8px 24px rgba(16,24,40,.04); }
+    .kpi label { display:block; font-size:13px; color:var(--muted); }
+    .kpi .v { margin-top:8px; font-size:30px; font-weight:800; }
+    .grid2 { display:grid; grid-template-columns:1.6fr 1fr; gap:14px; margin-bottom:18px; }
+    @media (max-width:900px) { .grid2 { grid-template-columns:1fr; } }
+    h2 { margin:0 0 12px; font-size:16px; }
+    .domains { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:10px; margin-bottom:18px; }
+    .dom .c { font-size:22px; font-weight:800; margin-top:6px; }
+    .dom .t { font-size:13px; color:var(--muted); }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    th, td { padding:10px 12px; text-align:left; border-bottom:1px solid var(--line); }
+    th { background:#f8fafc; color:var(--muted); font-size:11px; text-transform:uppercase; }
+    .foot { margin-top:18px; font-size:12px; color:var(--muted); line-height:1.5; }
+    a { color:var(--brand); }
+    canvas { max-height:320px; }
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="org">AI활성화진흥공단</div>
-    <h1>ITSM 표준운영관리 포털<br />온라인 바로가기</h1>
-    <p class="lead">
-      ITSM_CURSOR(React + FastAPI) 과제·시연용 진입 페이지입니다.
-      Windows·맥 모두 브라우저에서 바로 이용할 수 있습니다.
+    <header>
+      <div>
+        <h1>ITSM 통합관리 대시보드</h1>
+        <p class="sub">구성·변경·장애·문제 현황 온라인 뷰 (GitHub Pages 정적 스냅샷)</p>
+      </div>
+      <span class="chip">● 온라인 공개 · 데이터 스냅샷</span>
+    </header>
+
+    <section class="kpis" id="kpis"></section>
+
+    <section class="grid2">
+      <div class="card"><h2>카테고리별 자산 현황</h2><canvas id="bar"></canvas></div>
+      <div class="card"><h2>자산 상태 분포</h2><canvas id="pie"></canvas>
+        <div id="ciMove" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;"></div>
+      </div>
+    </section>
+
+    <h2 style="margin-bottom:10px;">운영 도메인 현황</h2>
+    <section class="domains" id="domains"></section>
+
+    <section class="card" style="padding:0;overflow:hidden;">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--line);"><h2 style="margin:0;">최근 변경 이력</h2></div>
+      <div style="overflow:auto;"><table><thead><tr>
+        <th>변경 티켓 ID</th><th>변경 제목</th><th>유형</th><th>상태</th><th>적용 일시</th>
+      </tr></thead><tbody id="recent"></tbody></table></div>
+    </section>
+
+    <p class="foot">
+      생성시각: <span id="gen"></span><br/>
+      소스: <a href="https://github.com/hudsonkim77/ITSM_CURSOR" target="_blank" rel="noopener">github.com/hudsonkim77/ITSM_CURSOR</a>
+      · 전체 CRUD 포털은 로컬/서버 기동 후 이용
     </p>
-
-    <div class="grid">
-      <a class="card" href="https://github.com/hudsonkim77/ITSM_CURSOR" target="_blank" rel="noopener">
-        <strong>GitHub 소스 저장소 (온라인)</strong>
-        <span>https://github.com/hudsonkim77/ITSM_CURSOR</span>
-      </a>
-      <a class="card" href="https://github.com/hudsonkim77/ITSM_CURSOR#실행--개발-권장" target="_blank" rel="noopener">
-        <strong>실행 방법 (README)</strong>
-        <span>로컬/프로덕션 기동 · 관리자지침서 안내</span>
-      </a>
-      <a class="card" href="http://localhost:8000/" target="_blank" rel="noopener">
-        <strong>로컬 포털 (기동 후)</strong>
-        <span>http://localhost:8000/ · scripts/prod.sh</span>
-      </a>
-    </div>
-
-    <div class="note">
-      <strong style="color:#e2e8f0">Google Drive 제출 시</strong><br />
-      제출 폴더의 <code>*.url</code>(Windows 바로가기) 또는
-      <code>ITSM포털_바로가기_허브.html</code>을 함께 올리면,
-      평가자 PC(Windows)에서도 더블클릭으로 동일 링크에 접근할 수 있습니다.<br /><br />
-      전체 CRUD 포털은 서버 기동이 필요합니다. 온라인에서는 본 페이지·GitHub로 형상·문서를 확인합니다.
-    </div>
   </div>
+  <script>
+    const DATA = {"generatedAt": "2026-07-12 23:33", "kpis": {"totalAssets": 312, "change": 29, "incident": 2, "problem": 1, "ciAdded": 4, "ciRemoved": 0}, "category": [{"label": "Storage", "count": 115}, {"label": "Staff", "count": 30}, {"label": "PC", "count": 30}, {"label": "VM", "count": 30}, {"label": "Server", "count": 20}, {"label": "Internal_Security_Sol", "count": 15}, {"label": "DMZ_Compute", "count": 15}, {"label": "L2_PAGE", "count": 12}, {"label": "Network_Security", "count": 10}, {"label": "Switch", "count": 10}, {"label": "Network_Equipment", "count": 8}, {"label": "L3_PAGE", "count": 8}, {"label": "L1_PAGE", "count": 4}, {"label": "Peripheral", "count": 3}, {"label": "Security_Management", "count": 2}], "statusDistribution": [{"label": "운영중", "count": 261}, {"label": "활성", "count": 50}, {"label": "대기", "count": 1}], "domainCounts": [{"title": "변경관리", "count": 29}, {"title": "장애관리", "count": 2}, {"title": "구성관리", "count": 312}, {"title": "문제관리", "count": 1}, {"title": "배포관리", "count": 5}, {"title": "요청관리", "count": 1}, {"title": "서비스수준관리", "count": 1}, {"title": "형상관리", "count": 2}, {"title": "운영상태관리", "count": 1}, {"title": "이벤트관리", "count": 1}, {"title": "테스트관리", "count": 2}, {"title": "연계관리", "count": 1}, {"title": "백업관리", "count": 1}], "recentChanges": [{"CHG_TICKET_ID": "CHG_20260712_009", "CHG_TITLE": "초기 베이스라인 정의서 v1.1(DDL 개정판) 발행", "CHG_TYPE": "표준", "CHG_STATUS": "완료", "APPLIED_DT": "2026-07-12"}, {"CHG_TICKET_ID": "CHG_20260712_008", "CHG_TITLE": "통합 초기 베이스라인 v1.0 확정 및 자산-형상 DB 연결 스키마 개선", "CHG_TYPE": "표준", "CHG_STATUS": "완료", "APPLIED_DT": "2026-07-12"}, {"CHG_TICKET_ID": "CHG_20260712_007", "CHG_TITLE": "실데이터 없던 7개 관리 화면에 가상 예시 데이터 1건씩 등록", "CHG_TYPE": "표준", "CHG_STATUS": "완료", "APPLIED_DT": "2026-07-12"}, {"CHG_TICKET_ID": "CHG_20260712_006", "CHG_TITLE": "필드값 없는 변경 티켓 9건 정리(CI·CHANGE_CI_MAP 참조 포함 일괄 정리)", "CHG_TYPE": "표준", "CHG_STATUS": "완료", "APPLIED_DT": "2026-07-12"}, {"CHG_TICKET_ID": "CHG_20260712_005", "CHG_TITLE": "경영관리에 구축산출물 폴더 신설(테스트결과서·프로그램명세서·DB명세서·아키텍처결과서·표준정의서 5종 PDF)", "CHG_TYPE": "표준", "CHG_STATUS": "완료", "APPLIED_DT": "2026-07-12"}, {"CHG_TICKET_ID": "CHG_20260712_004", "CHG_TITLE": "전체 관리 페이지(장애·문제·배포·요청·SLA·형상·운영상태·이벤트·테스트·연계·백업)에 변경관리와 동일한 CRUD 화면 구현", "CHG_TYPE": "표준", "CHG_STATUS": "완료", "APPLIED_DT": "2026-07-12"}, {"CHG_TICKET_ID": "CHG_20260712_003", "CHG_TITLE": "변경요청 조회 표의 컬럼 헤더를 한글로 치환", "CHG_TYPE": "표준", "CHG_STATUS": "완료", "APPLIED_DT": "2026-07-12"}, {"CHG_TICKET_ID": "CHG_20260712_002", "CHG_TITLE": "ERD 페이지 전체 폭 활용, 컬럼명 한글(영어) 표기, 확대/축소·드래그 이동 인터랙션 추가", "CHG_TYPE": "표준", "CHG_STATUS": "완료", "APPLIED_DT": "2026-07-12"}]};
+    document.getElementById('gen').textContent = DATA.generatedAt;
+    const k = DATA.kpis;
+    document.getElementById('kpis').innerHTML = [
+      ['총 자산 수', k.totalAssets],
+      ['변경 건수', k.change],
+      ['장애 건수', k.incident],
+      ['문제 건수', k.problem],
+    ].map(([l,v]) => `<div class="card kpi"><label>${l}</label><div class="v">${Number(v).toLocaleString()}</div></div>`).join('');
+
+    document.getElementById('domains').innerHTML = DATA.domainCounts.map(d =>
+      `<div class="card dom"><div class="t">${d.title}</div><div class="c">${d.count}</div></div>`
+    ).join('');
+
+    document.getElementById('ciMove').innerHTML =
+      `<div class="card" style="padding:10px;background:#ecfdf5;border:none;"><span style="font-size:12px;color:#047857;">자산 추가</span><div style="font-weight:800;color:#047857;">${k.ciAdded}</div></div>` +
+      `<div class="card" style="padding:10px;background:#fff1f2;border:none;"><span style="font-size:12px;color:#be123c;">자산 삭제</span><div style="font-weight:800;color:#be123c;">${k.ciRemoved}</div></div>`;
+
+    const tb = document.getElementById('recent');
+    if (!DATA.recentChanges.length) {
+      tb.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#98a2b3;padding:24px;">변경 이력이 없습니다.</td></tr>';
+    } else {
+      tb.innerHTML = DATA.recentChanges.map(r => `<tr>
+        <td style="font-family:monospace;font-weight:700;color:var(--brand);">${r.CHG_TICKET_ID||''}</td>
+        <td>${r.CHG_TITLE||''}</td>
+        <td>${r.CHG_TYPE||'—'}</td>
+        <td>${r.CHG_STATUS||'미정'}</td>
+        <td>${r.APPLIED_DT||'—'}</td>
+      </tr>`).join('');
+    }
+
+    const cats = [...DATA.category].sort((a,b)=>b.count-a.count);
+    new Chart(document.getElementById('bar'), {
+      type: 'bar',
+      data: {
+        labels: cats.map(c=>c.label),
+        datasets: [{ data: cats.map(c=>c.count), backgroundColor:['#3a5eef','#5b84fa','#8fb0ff','#22c3a6','#f4a63b'], borderRadius:6 }]
+      },
+      options: { indexAxis:'y', plugins:{ legend:{display:false} }, scales:{ x:{ beginAtZero:true, ticks:{ precision:0 } } } }
+    });
+    new Chart(document.getElementById('pie'), {
+      type: 'doughnut',
+      data: {
+        labels: DATA.statusDistribution.map(s=>s.label),
+        datasets: [{ data: DATA.statusDistribution.map(s=>s.count), backgroundColor:['#3a5eef','#22c3a6','#f4a63b','#8fb0ff','#e5679a'] }]
+      },
+      options: { plugins:{ legend:{ position:'bottom' } } }
+    });
+  </script>
 </body>
 </html>
