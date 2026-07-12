@@ -1,0 +1,2 @@
+OPS_ID,CHECK_DT,STATUS,METRIC_SUMMARY,NOTE
+OPS_20260712_001,2026-07-12 09:00,정상,"(예시) CPU 32%, 메모리 54%, 디스크 61%",화면 구조 확인용 예시(가상) 데이터

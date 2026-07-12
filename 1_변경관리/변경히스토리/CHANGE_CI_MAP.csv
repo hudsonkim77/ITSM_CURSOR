@@ -1,0 +1,7 @@
+MAP_ID,CHG_TICKET_ID,CI_ID,APPLIED_DT,WORK_NOTE
+MAP_0061,CHG_20260711_001,CFG_WEB_019,2026-07-11,ITSM 통합관리대시보드 메인 페이지(index.html) 최초 배포
+MAP_0062,CHG_20260711_001,CFG_WEB_020,2026-07-11,변경관리 메뉴 페이지(변경관리.html) 최초 배포 - placeholder
+MAP_0063,CHG_20260711_001,CFG_WEB_021,2026-07-11,장애관리 메뉴 페이지(장애관리.html) 최초 배포 - placeholder
+MAP_0064,CHG_20260711_001,CFG_WEB_022,2026-07-11,구성관리 메뉴 페이지(구성관리.html) 최초 배포 - placeholder
+MAP_0065,CHG_20260711_014,CFG_WEB_023,2026-07-11,경영관리 메뉴 페이지(경영관리.html) 신규 배포 - 업무보고 5건 링크 목록
+MAP_0066,CHG_20260712_001,CFG_WEB_024,2026-07-12,ERD.html 신규 배포

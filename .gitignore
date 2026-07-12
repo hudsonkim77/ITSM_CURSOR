@@ -1,0 +1,22 @@
+# dependencies / build
+**/node_modules/
+**/dist/
+**/.vite/
+**/__pycache__/
+**/*.pyc
+.Python
+.venv/
+venv/
+
+# env / OS / IDE
+.env
+.env.*
+.DS_Store
+.idea/
+.vscode/
+*.log
+
+# Python tooling
+*.egg-info/
+.pytest_cache/
+.mypy_cache/

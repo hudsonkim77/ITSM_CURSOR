@@ -1,0 +1,3 @@
+TEST_ID,DEPLOY_ID,TEST_TYPE,TEST_RESULT,TESTED_DT,TESTER_TEAM,NOTE
+TST_20260711_001,DEP_20260711_003,회귀테스트,PASS,2026-07-11,정보화기획팀,"streamlit.testing.v1.AppTest로 pages/1_변경관리.py 등 12개 페이지 무예외 렌더링 확인, 로컬 서버 curl로 홈/문제관리/백업관리 HTTP 200 확인"
+TST_20260711_002,DEP_20260711_004,회귀테스트,PASS,2026-07-11,정보화기획팀,신규 도메인 10개(6~15) 포함 홈.py st.navigation() 전체 14개 페이지를 AppTest로 실행해 예외 없음 확인

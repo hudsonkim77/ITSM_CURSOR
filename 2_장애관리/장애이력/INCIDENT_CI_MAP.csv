@@ -1,0 +1,3 @@
+MAP_ID,INCIDENT_ID,CI_ID,IMPACT_DESC
+MAP_0001,INC_20260711_001,CFG_WEB_019,"CHANGE.csv 파싱 실패로 Streamlit 홈.py(대시보드 메인) 전체 화면 에러, 서비스 접속 불가"
+MAP_0002,INC_20260711_002,CFG_WEB_019,Streamlit 배포판 홈 화면 상단 로고가 요구된 크기(폭 400px 이상)로 표시되지 않음

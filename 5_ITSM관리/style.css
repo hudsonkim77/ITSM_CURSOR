@@ -1,0 +1,810 @@
+/* 경영진 관제형(Control-room) — 이사님 피드백 반영해 확정한 디자인 기조.
+   의도적으로 단일 다크 테마로 고정(OS 라이트 설정과 무관). 향후 신규 페이지도 이 톤 유지. */
+:root {
+  --page-plane:      #14161a;
+  --surface-1:       #1b1e23;
+  --surface-2:       #21252b;
+  --text-primary:    #edeef0;
+  --text-secondary:  #a7acb3;
+  --text-muted:      #767c85;
+  --gridline:        #2a2e35;
+  --baseline:        #363b42;
+  --border:          rgba(255,255,255,0.08);
+  --accent:          #ff9f45; /* 관제 액센트(경고등 앰버) — 인터랙션/주요 강조 전용 */
+  --accent-soft:     rgba(255,159,69,0.14);
+  --good:            #33c29d;
+  --warn:            #e8b93e;
+  --crit:            #ff5c5c;
+  --series-2:        #ff9f45; /* 변경건수 */
+  --series-3:        #ff5c5c; /* 장애건수 */
+  --series-4:        #e8b93e; /* 구성관리 추가 */
+  --series-5:        #8b9098; /* 구성관리 삭제 */
+  /* 5층 건물 시각화 전용 색(층 구분용 — 액센트와 별개, 기능적 구분이 목적) */
+  --cat-1: #3987e5;
+  --cat-2: #33c29d;
+  --cat-3: #e8b93e;
+  --cat-4: #4caf50;
+  --cat-5: #9085e9;
+  --cat-6: #ff5c5c;
+  --cat-7: #d55181;
+  --cat-8: #ff9f45;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--page-plane);
+  color: var(--text-primary);
+}
+
+/* ---------- 상단 메뉴바 ---------- */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 24px;
+  background: var(--surface-1);
+  border-bottom: 1px solid var(--border);
+}
+
+.navbar .brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.navbar .brand:hover {
+  color: var(--text-secondary);
+}
+
+.navbar .brand-mark {
+  width: 420px;
+  max-width: 46vw;
+  height: auto;
+  display: block;
+  background: #e2dcd0;
+  padding: 6px 12px;
+  border-radius: 8px;
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.nav-buttons button {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.nav-buttons button:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.nav-buttons button.active {
+  background: var(--accent);
+  color: #1a1206;
+  border-color: var(--accent);
+}
+
+/* ---------- 본문 레이아웃 ---------- */
+main {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.panel {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.panel:hover {
+  border-color: rgba(255,255,255,0.14);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.panel-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  text-align: left;
+  margin: 0 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 실시간 집계 패널에만 표시(정적 참고자료성 패널엔 붙이지 않음) */
+.panel-title--live::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--good);
+  box-shadow: 0 0 8px var(--good);
+  flex: none;
+}
+
+/* ---------- 상단: 총 자산수 + 카테고리 막대 ---------- */
+.top-row {
+  display: grid;
+  grid-template-columns: minmax(200px, 1fr) minmax(0, 2fr);
+  gap: 20px;
+}
+
+@media (max-width: 720px) {
+  .top-row { grid-template-columns: 1fr; }
+}
+
+.hero-figure {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.hero-figure .value {
+  font-size: 52px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  background: linear-gradient(180deg, #ffffff, #c9ccd1);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-figure .label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.hero-figure .note {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.chart-wrap {
+  position: relative;
+  width: 100%;
+}
+
+/* ---------- 하단: 현황 스코어보드 ---------- */
+.scoreboard {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 720px) {
+  .scoreboard { grid-template-columns: repeat(2, 1fr); }
+}
+
+.stat-tile {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px 14px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-tile .accent {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-radius: 0;
+  box-shadow: 0 0 12px currentColor;
+}
+
+.stat-tile .value {
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-tile .label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.stat-tile .caption {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ---------- 최근 사항 3건(변경/자산등록/장애) ---------- */
+.recent-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.recent-item {
+  border-bottom: 1px solid var(--border);
+}
+
+.recent-item:last-child {
+  border-bottom: none;
+}
+
+.recent-item-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 4px;
+  background: transparent;
+  border: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  color: var(--text-primary);
+}
+
+.recent-item-row:hover {
+  background: var(--accent-soft);
+}
+
+.recent-item-badge {
+  flex: none;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.recent-item-title {
+  flex: 1;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recent-item-date {
+  flex: none;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.recent-item-detail {
+  display: none;
+  padding: 4px 14px 14px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  border-top: 1px solid var(--gridline);
+}
+
+.recent-item.open .recent-item-detail {
+  display: block;
+  padding-top: 12px;
+}
+
+.recent-item-detail-id {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+/* ---------- 경영관리 업무보고 링크 ---------- */
+.report-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.report-links a {
+  font-size: 13px;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.report-links a::before {
+  content: "↗ ";
+  color: var(--text-muted);
+}
+
+.report-links a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+/* ---------- 하단 푸터: 로고 + 정책 링크 ---------- */
+footer {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 20px 24px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+}
+
+.footer-logo {
+  height: 34px;
+  width: auto;
+  background: #e2dcd0;
+  padding: 6px 12px;
+  border-radius: 8px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+footer a {
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: var(--text-secondary);
+  text-decoration: underline;
+}
+
+/* ---------- 팝업(모달): 개인정보처리방침 등 ---------- */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 100;
+}
+
+.modal-overlay.open {
+  display: flex;
+}
+
+.modal-panel {
+  position: relative;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: min(640px, 100%);
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 28px 28px 24px;
+}
+
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.modal-close:hover {
+  background: var(--gridline);
+  color: var(--text-primary);
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 16px;
+}
+
+.modal-intro {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0 0 20px;
+}
+
+.modal-section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 18px 0 6px;
+}
+
+.modal-section-body {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.modal-section-list {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* ---------- 관리 화면 placeholder (입력창 설계 전) ---------- */
+.placeholder-note {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 12px 0 0;
+}
+
+/* ---------- 구성관리: 가상 5층 건물 (3D) ---------- */
+.building-stage {
+  height: 460px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 70px;
+  perspective: 1300px;
+  overflow-x: auto;
+}
+
+.building {
+  position: relative;
+  width: 300px;
+  height: 60px;
+  transform-style: preserve-3d;
+  transform: rotateX(-16deg) rotateY(-30deg);
+}
+
+.floor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 300px;
+  height: 60px;
+  transform-style: preserve-3d;
+  cursor: default;
+}
+
+.floor::after {
+  content: attr(data-floor) " " attr(data-name);
+  position: absolute;
+  left: 0;
+  bottom: 100%;
+  transform: translateZ(76px);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  padding-bottom: 3px;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+}
+
+.floor:hover::after {
+  content: attr(data-floor) " " attr(data-name) " — " attr(data-detail);
+  opacity: 1;
+}
+
+.floor-1 { transform: translateY(0); }
+.floor-2 { transform: translateY(-60px); }
+.floor-3 { transform: translateY(-120px); }
+.floor-4 { transform: translateY(-180px); }
+.floor-5 { transform: translateY(-240px); }
+
+.floor .face {
+  position: absolute;
+  border: 1px solid rgba(0,0,0,0.25);
+}
+
+.floor .face-front {
+  width: 300px;
+  height: 60px;
+  transform: translateZ(75px);
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+}
+
+.floor-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.55);
+  line-height: 1.3;
+}
+
+.floor-label b {
+  margin-right: 4px;
+}
+
+.floor .face-side {
+  width: 150px;
+  height: 60px;
+  left: 75px;
+  transform: rotateY(90deg) translateZ(150px);
+  filter: brightness(0.72);
+}
+
+.floor .face-top {
+  width: 300px;
+  height: 150px;
+  top: -45px;
+  transform: rotateX(90deg) translateZ(30px);
+}
+
+.floor-1 .face { background: var(--cat-1); }
+.floor-2 .face { background: var(--cat-7); }
+.floor-3 .face { background: var(--cat-5); }
+.floor-4 .face { background: var(--cat-2); }
+.floor-5 .face {
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.18) 0 2px, transparent 2px 18px),
+    #3a4048;
+}
+.floor-5 .face-side { filter: brightness(0.6); }
+.floor-5 .face-top { filter: brightness(1.25); }
+
+.building-legend {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.building-legend .swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  margin-right: 8px;
+}
+
+.building-legend .swatch.sw-1f { background: var(--cat-1); }
+.building-legend .swatch.sw-2f { background: var(--cat-7); }
+.building-legend .swatch.sw-3f { background: var(--cat-5); }
+.building-legend .swatch.sw-4f { background: var(--cat-2); }
+.building-legend .swatch.sw-5f { background: #3a4048; }
+
+/* ---------- 구성관리: ERD 다이어그램 ---------- */
+.erd-scroll {
+  overflow-x: auto;
+}
+
+.erd-wrap {
+  position: relative;
+  width: 100%;
+  padding-bottom: 58%;
+  min-width: 640px;
+}
+
+.erd-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.erd-line {
+  stroke: var(--baseline);
+  stroke-width: 2;
+}
+
+.erd-line-dashed {
+  stroke-dasharray: 6 5;
+}
+
+.erd-card {
+  font-size: 15px;
+  font-weight: 600;
+  fill: var(--text-muted);
+}
+
+.erd-box {
+  position: absolute;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--page-plane);
+  padding: 10px 12px;
+  overflow: hidden;
+}
+
+.erd-box.erd-hub {
+  border-color: var(--series-2);
+  border-width: 2px;
+}
+
+.erd-box-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.erd-box-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.erd-box-field {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ---------- 통합 데이터 모델 ERD (논리/물리 토글, Mermaid.js) ---------- */
+.erd-toggle-buttons {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.erd-toggle-buttons button {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.erd-toggle-buttons button:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.erd-toggle-buttons button.active {
+  background: var(--accent);
+  color: #1a1206;
+  border-color: var(--accent);
+}
+
+/* ERD 페이지는 26개 테이블을 다뤄야 해서 본문 폭 제한(1120px)을 풀고 화면 끝까지 쓴다.
+   다른 페이지의 main{max-width:1120px}에는 영향 없도록 이 클래스가 붙은 페이지에서만 적용. */
+main.erd-wide-main {
+  max-width: 100% !important;
+}
+
+.erd-zoom-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.erd-zoom-toolbar button {
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.erd-zoom-toolbar button:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.erd-zoom-toolbar .erd-zoom-reset {
+  width: auto;
+  padding: 0 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.erd-zoom-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  min-width: 42px;
+}
+
+.erd-zoom-hint {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-left: 4px;
+}
+
+/* 마우스 휠 확대/축소 + 드래그 이동이 가능한 뷰포트. overflow:hidden으로 잘라내고
+   내부 .erd-zoom-content에 CSS transform(scale+translate)을 걸어 확대/이동을 구현한다
+   (가로 스크롤 방식은 26개 테이블 물리 모델 전체를 한눈에 보기 어려워 확대/축소로 대체). */
+.erd-mermaid-scroll {
+  position: relative;
+  overflow: hidden;
+  height: 70vh;
+  min-height: 420px;
+  background: var(--page-plane);
+  border-radius: 8px;
+  padding: 0;
+  cursor: grab;
+}
+
+.erd-mermaid-scroll.erd-dragging {
+  cursor: grabbing;
+}
+
+.erd-zoom-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  padding: 16px;
+}
+
+/* display:none 대신 visibility:hidden을 쓰는 이유 — Mermaid는 렌더링 시점에 컨테이너의
+   실제 치수를 읽어 엣지 경로를 계산하는데, display:none인 요소는 치수가 0이 되어
+   자기참조 관계(예: CI-CI, BACKUP-BACKUP) 엣지가 NaN 좌표로 깨지는 버그가 있었다. */
+.erd-mermaid-hidden {
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Mermaid는 svg에 기본으로 max-width:100%를 넣어 컨테이너에 맞춰 축소시키는데,
+   테이블이 26개인 물리 모델은 그렇게 하면 글자를 읽을 수 없을 만큼 작아진다.
+   원본 크기 그대로 두고 .erd-zoom-content의 transform(scale)으로 확대/축소한다. */
+.erd-mermaid-scroll svg {
+  max-width: none !important;
+  width: auto !important;
+}

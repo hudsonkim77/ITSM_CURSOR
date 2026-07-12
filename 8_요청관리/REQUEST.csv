@@ -1,0 +1,2 @@
+REQ_ID,REQ_TITLE,REQ_TYPE,REQUESTER_ID,STATUS,REQUESTED_DT,COMPLETED_DT,ASSIGNED_TEAM,DESC
+REQ_20260712_001,(예시) AI바우처 지원사업 접수시스템 계정 신청,서비스요청,USR_001,접수,2026-07-12,,정보화기획팀,화면 구조 확인용 예시(가상) 데이터입니다. 실제 요청 등록 시 이 행을 삭제하고 실데이터로 교체하세요.

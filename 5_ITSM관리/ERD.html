@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>통합 데이터 모델 ERD - ITSM 통합관리대시보드</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app-nav"></div>
+
+<main class="erd-wide-main">
+
+  <section class="panel">
+    <p class="panel-title">통합 데이터 모델 ERD · 논리/물리</p>
+    <div class="erd-toggle-buttons">
+      <button id="erd-btn-logical" class="active" onclick="showErdModel('logical')">논리 모델</button>
+      <button id="erd-btn-physical" onclick="showErdModel('physical')">물리 모델</button>
+    </div>
+    <p class="placeholder-note" id="erd-caption">
+      논리 모델: 13개 ITIL practice 도메인의 핵심 엔티티와 관계만 표시(구현 세부는 생략). 컬럼은 한글명(영문 컬럼명)으로 표시됩니다.
+    </p>
+
+    <div class="erd-zoom-toolbar">
+      <button onclick="erdZoom(1.2)" title="확대">+</button>
+      <button onclick="erdZoom(1/1.2)" title="축소">−</button>
+      <button class="erd-zoom-reset" onclick="erdZoomReset()">100%</button>
+      <span class="erd-zoom-label" id="erd-zoom-label">100%</span>
+      <span class="erd-zoom-hint">드래그로 이동 · 휠로 확대/축소</span>
+    </div>
+
+    <div class="erd-mermaid-scroll" id="erd-viewport">
+      <div class="erd-zoom-content" id="erd-zoom-content">
+        <div class="mermaid" id="erd-diagram-logical">
+erDiagram
+    CHANGE {
+        string CHG_TICKET_ID "변경 티켓 ID(CHG_TICKET_ID)"
+        string CHG_TITLE "변경 제목(CHG_TITLE)"
+        string CHG_STATUS "변경 상태(CHG_STATUS)"
+    }
+    INCIDENT {
+        string INCIDENT_ID "장애 ID(INCIDENT_ID)"
+        string INCIDENT_TITLE "장애 제목(INCIDENT_TITLE)"
+        string SEVERITY "심각도(SEVERITY)"
+        string INCIDENT_STATUS "장애 상태(INCIDENT_STATUS)"
+    }
+    CI {
+        string CI_ID "구성항목 ID(CI_ID)"
+        string CI_NAME "자산명(CI_NAME)"
+        string CI_CATEGORY "자산 분류(CI_CATEGORY)"
+        string STATUS "상태(STATUS)"
+    }
+    PROBLEM {
+        string PROBLEM_ID "문제 ID(PROBLEM_ID)"
+        string PROBLEM_TITLE "문제 제목(PROBLEM_TITLE)"
+        string STATUS "상태(STATUS)"
+    }
+    DEPLOY {
+        string DEPLOY_ID "배포 ID(DEPLOY_ID)"
+        string DEPLOY_NAME "배포명(DEPLOY_NAME)"
+        string DEPLOY_STATUS "배포 상태(DEPLOY_STATUS)"
+    }
+    REQUEST {
+        string REQ_ID "요청 ID(REQ_ID)"
+        string REQ_TITLE "요청 제목(REQ_TITLE)"
+        string STATUS "상태(STATUS)"
+    }
+    SLA {
+        string SLA_ID "SLA ID(SLA_ID)"
+        string SERVICE_NAME "서비스명(SERVICE_NAME)"
+        string STATUS "상태(STATUS)"
+    }
+    BASELINE {
+        string BASELINE_ID "베이스라인 ID(BASELINE_ID)"
+        string BASELINE_NAME "베이스라인명(BASELINE_NAME)"
+        string STATUS "상태(STATUS)"
+    }
+    OPS_STATUS {
+        string OPS_ID "운영상태 ID(OPS_ID)"
+        string CHECK_DT "점검 일시(CHECK_DT)"
+        string STATUS "상태(STATUS)"
+    }
+    EVENT {
+        string EVENT_ID "이벤트 ID(EVENT_ID)"
+        string EVENT_TITLE "이벤트 제목(EVENT_TITLE)"
+        string EVENT_STATUS "이벤트 상태(EVENT_STATUS)"
+    }
+    TEST_CASE {
+        string TEST_ID "테스트 ID(TEST_ID)"
+        string TEST_TYPE "테스트 유형(TEST_TYPE)"
+        string TEST_RESULT "테스트 결과(TEST_RESULT)"
+    }
+    INTERFACE {
+        string INTERFACE_ID "연계 ID(INTERFACE_ID)"
+        string INTERFACE_NAME "연계명(INTERFACE_NAME)"
+        string STATUS "상태(STATUS)"
+    }
+    BACKUP {
+        string BACKUP_ID "백업 ID(BACKUP_ID)"
+        string ACTION_TYPE "조치 유형(ACTION_TYPE)"
+        string STATUS "상태(STATUS)"
+    }
+
+    CHANGE }o--o{ CI : "N:M(CHANGE_CI_MAP)"
+    INCIDENT }o--o{ CI : "N:M(INCIDENT_CI_MAP)"
+    CHANGE ||--o{ INCIDENT : "촉발(TRIGGERED_BY)"
+    INCIDENT ||--o{ CHANGE : "원인(CAUSED_BY)"
+    CHANGE ||--o{ CI : "최초등록"
+    CI ||--o{ CI : "상위-하위 계층"
+    PROBLEM }o--o{ INCIDENT : "N:M(PROBLEM_INCIDENT_MAP)"
+    PROBLEM ||--o{ BASELINE : "영구조치 to 베이스라인"
+    DEPLOY }o--o{ CHANGE : "N:M(DEPLOY_CHG_MAP)"
+    DEPLOY ||--o{ TEST_CASE : "검증대상"
+    DEPLOY ||--o{ SLA : "SLA 모니터링"
+    REQUEST }o--o{ INCIDENT : "N:M(REQUEST_INCIDENT_MAP)"
+    REQUEST }o--o{ CI : "N:M(REQUEST_CI_MAP)"
+    SLA }o--o{ INCIDENT : "N:M(SLA_INCIDENT_MAP)"
+    SLA }o--o{ OPS_STATUS : "N:M(SLA_OPS_MAP)"
+    BASELINE }o--o{ CI : "N:M(BASELINE_CI_MAP)"
+    OPS_STATUS }o--o{ CI : "N:M(OPS_CI_MAP)"
+    CI ||--o{ EVENT : "발생 CI"
+    OPS_STATUS ||--o{ EVENT : "감지 소스"
+    INCIDENT ||--o{ EVENT : "장애로 확대"
+    INTERFACE }o--o{ CI : "N:M(INTERFACE_CI_MAP)"
+    TEST_CASE ||--o{ INTERFACE : "연동 검증"
+    BASELINE ||--o{ INTERFACE : "연동 버전"
+    BACKUP }o--o{ CI : "N:M(BACKUP_CI_MAP)"
+    BACKUP ||--o{ BACKUP : "복원 원본"
+        </div>
+
+        <div class="mermaid erd-mermaid-hidden" id="erd-diagram-physical">
+erDiagram
+    CHANGE {
+        string CHG_TICKET_ID PK "변경 티켓 ID(CHG_TICKET_ID)"
+        string CHG_TITLE "변경 제목(CHG_TITLE)"
+        string CHG_TYPE "변경 유형(CHG_TYPE)"
+        string REQUEST_TEAM "요청 부서(REQUEST_TEAM)"
+        string REQUESTER_ID "요청자 ID(REQUESTER_ID)"
+        string APPROVER_ID "승인자 ID(APPROVER_ID)"
+        string CHG_STATUS "변경 상태(CHG_STATUS)"
+        date PLANNED_DT "계획 일시(PLANNED_DT)"
+        date APPLIED_DT "적용 일시(APPLIED_DT)"
+        string ROLLBACK_YN "롤백 여부(ROLLBACK_YN)"
+        string IMPACT_LEVEL "영향도(IMPACT_LEVEL)"
+        string RELATED_DESC "상세 내용(RELATED_DESC)"
+        string TRIGGERED_BY_INCIDENT_ID FK "촉발 장애 ID(TRIGGERED_BY_INCIDENT_ID)"
+    }
+    CHANGE_CI_MAP {
+        string MAP_ID PK "매핑 ID(MAP_ID)"
+        string CHG_TICKET_ID FK "변경 티켓 ID(CHG_TICKET_ID)"
+        string CI_ID FK "구성항목 ID(CI_ID)"
+        date APPLIED_DT "적용 일시(APPLIED_DT)"
+        string WORK_NOTE "작업 메모(WORK_NOTE)"
+    }
+    INCIDENT {
+        string INCIDENT_ID PK "장애 ID(INCIDENT_ID)"
+        string INCIDENT_TITLE "장애 제목(INCIDENT_TITLE)"
+        string SEVERITY "심각도(SEVERITY)"
+        date DETECTED_DT "감지 일시(DETECTED_DT)"
+        date RESOLVED_DT "복구 일시(RESOLVED_DT)"
+        string ROOT_CAUSE "근본 원인(ROOT_CAUSE)"
+        string ACTION_TAKEN "조치 내용(ACTION_TAKEN)"
+        string HANDLER_ID "처리자 ID(HANDLER_ID)"
+        string INCIDENT_STATUS "장애 상태(INCIDENT_STATUS)"
+        string CAUSED_BY_CHG_TICKET_ID FK "원인 변경 ID(CAUSED_BY_CHG_TICKET_ID)"
+    }
+    INCIDENT_CI_MAP {
+        string MAP_ID PK "매핑 ID(MAP_ID)"
+        string INCIDENT_ID FK "장애 ID(INCIDENT_ID)"
+        string CI_ID FK "구성항목 ID(CI_ID)"
+        string IMPACT_DESC "영향 내용(IMPACT_DESC)"
+    }
+    CI {
+        string CI_ID PK "구성항목 ID(CI_ID)"
+        string CI_NAME "자산명(CI_NAME)"
+        string HOST_NAME "호스트명(HOST_NAME)"
+        string CI_TYPE "자산 유형(CI_TYPE)"
+        string CI_CATEGORY "자산 분류(CI_CATEGORY)"
+        string DEPTH_LEVEL "계층 깊이(DEPTH_LEVEL)"
+        string PARENT_CI_ID FK "상위 자산 ID(PARENT_CI_ID)"
+        string LOCATION_OR_URL "위치/URL(LOCATION_OR_URL)"
+        string IP_ADDRESS "IP 주소(IP_ADDRESS)"
+        string OS_VERSION "OS 버전(OS_VERSION)"
+        string SERIAL_NUM "일련번호(SERIAL_NUM)"
+        string OWNER_TEAM "담당 부서(OWNER_TEAM)"
+        string ADMIN_USER_ID "관리자 ID(ADMIN_USER_ID)"
+        string STATUS "상태(STATUS)"
+        date INST_DT "설치 일시(INST_DT)"
+        string CHG_TICKET_ID FK "변경 티켓 ID(CHG_TICKET_ID)"
+    }
+    CI_HISTORY {
+        string HISTORY_ID PK "이력 ID(HISTORY_ID)"
+        string CI_ID FK "구성항목 ID(CI_ID)"
+        string CI_NAME "자산명(CI_NAME)"
+        string CI_CATEGORY "자산 분류(CI_CATEGORY)"
+        string ACTION "조치 구분(ACTION)"
+        date ACTION_DT "조치 일시(ACTION_DT)"
+        string ACTION_BY "조치자(ACTION_BY)"
+        string NOTE "비고(NOTE)"
+    }
+    PROBLEM {
+        string PROBLEM_ID PK "문제 ID(PROBLEM_ID)"
+        string PROBLEM_TITLE "문제 제목(PROBLEM_TITLE)"
+        string PROBLEM_TYPE "문제 유형(PROBLEM_TYPE)"
+        string ROOT_CAUSE "근본 원인(ROOT_CAUSE)"
+        string WORKAROUND "임시 회피책(WORKAROUND)"
+        string PERMANENT_FIX "영구 조치(PERMANENT_FIX)"
+        string STATUS "상태(STATUS)"
+        date DETECTED_DT "감지 일시(DETECTED_DT)"
+        date RESOLVED_DT "복구 일시(RESOLVED_DT)"
+        string OWNER_TEAM "담당 부서(OWNER_TEAM)"
+    }
+    PROBLEM_INCIDENT_MAP {
+        string MAP_ID PK "매핑 ID(MAP_ID)"
+        string PROBLEM_ID FK "문제 ID(PROBLEM_ID)"
+        string INCIDENT_ID FK "장애 ID(INCIDENT_ID)"
+        string NOTE "비고(NOTE)"
+    }
+    DEPLOY {
+        string DEPLOY_ID PK "배포 ID(DEPLOY_ID)"
+        string DEPLOY_NAME "배포명(DEPLOY_NAME)"
+        string DEPLOY_TYPE "배포 유형(DEPLOY_TYPE)"
+        string DEPLOY_STATUS "배포 상태(DEPLOY_STATUS)"
+        date PLANNED_DT "계획 일시(PLANNED_DT)"
+        date DEPLOYED_DT "배포 일시(DEPLOYED_DT)"
+        string OWNER_TEAM "담당 부서(OWNER_TEAM)"
+        string DESC "설명(DESC)"
+    }
+    DEPLOY_CHG_MAP {
+        string MAP_ID PK "매핑 ID(MAP_ID)"
+        string DEPLOY_ID FK "배포 ID(DEPLOY_ID)"
+        string CHG_TICKET_ID FK "변경 티켓 ID(CHG_TICKET_ID)"
+        string NOTE "비고(NOTE)"
+    }
+    REQUEST {
+        string REQ_ID PK "요청 ID(REQ_ID)"
+        string REQ_TITLE "요청 제목(REQ_TITLE)"
+        string REQ_TYPE "요청 유형(REQ_TYPE)"
+        string REQUESTER_ID "요청자 ID(REQUESTER_ID)"
+        string STATUS "상태(STATUS)"
+        date REQUESTED_DT "요청 일시(REQUESTED_DT)"
+        date COMPLETED_DT "완료 일시(COMPLETED_DT)"
+        string ASSIGNED_TEAM "담당 부서(ASSIGNED_TEAM)"
+        string DESC "설명(DESC)"
+    }
+    REQUEST_INCIDENT_MAP {
+        string MAP_ID PK "매핑 ID(MAP_ID)"
+        string REQ_ID FK "요청 ID(REQ_ID)"
+        string INCIDENT_ID FK "장애 ID(INCIDENT_ID)"
+        string NOTE "비고(NOTE)"
+    }
+    REQUEST_CI_MAP {
+        string MAP_ID PK "매핑 ID(MAP_ID)"
+        string REQ_ID FK "요청 ID(REQ_ID)"
+        string CI_ID FK "구성항목 ID(CI_ID)"
+        string NOTE "비고(NOTE)"
+    }
+    SLA {
+        string SLA_ID PK "SLA ID(SLA_ID)"
+        string SERVICE_NAME "서비스명(SERVICE_NAME)"
+        string METRIC_TYPE "지표 유형(METRIC_TYPE)"
+        string TARGET_VALUE "목표치(TARGET_VALUE)"
+        string PERIOD "측정 주기(PERIOD)"
+        string MEASURED_VALUE "측정치(MEASURED_VALUE)"
+        string STATUS "상태(STATUS)"
+        string OWNER_TEAM "담당 부서(OWNER_TEAM)"
+        string DEPLOY_ID FK "배포 ID(DEPLOY_ID)"
+    }
+    SLA_INCIDENT_MAP {
+        string MAP_ID PK "매핑 ID(MAP_ID)"
+        string SLA_ID FK "SLA ID(SLA_ID)"
+        string INCIDENT_ID FK "장애 ID(INCIDENT_ID)"
+        string BREACH_YN "위반 여부(BREACH_YN)"
+        string NOTE "비고(NOTE)"
+    }
+    SLA_OPS_MAP {
+        string MAP_ID PK "매핑 ID(MAP_ID)"
+        string SLA_ID FK "SLA ID(SLA_ID)"
+        string OPS_ID FK "운영상태 ID(OPS_ID)"
+        string NOTE "비고(NOTE)"
+    }
+    BASELINE {
+        string BASELINE_ID PK "베이스라인 ID(BASELINE_ID)"
+        string BASELINE_NAME "베이스라인명(BASELINE_NAME)"
+        string VERSION "버전(VERSION)"
+        string BASELINE_TYPE "베이스라인 유형(BASELINE_TYPE)"
+        string STATUS "상태(STATUS)"
+        date CREATED_DT "생성 일시(CREATED_DT)"
+        date APPROVED_DT "승인 일시(APPROVED_DT)"
+        string OWNER_TEAM "담당 부서(OWNER_TEAM)"
+        string RESOLVED_PROBLEM_ID FK "조치 문제 ID(RESOLVED_PROBLEM_ID)"
+    }
+    BASELINE_CI_MAP {
+        string MAP_ID PK "매핑 ID(MAP_ID)"
+        string BASELINE_ID FK "베이스라인 ID(BASELINE_ID)"
+        string BASELINE_VERSION "베이스라인 버전(스냅샷)(BASELINE_VERSION)"
+        string CI_ID FK "구성항목 ID(CI_ID)"
+        string BASELINE_AREA "베이스라인 영역(BASELINE_AREA)"
+        date APPLIED_DT "적용 일시(APPLIED_DT)"
+        string NOTE "비고(NOTE)"
+    }
+    OPS_STATUS {
+        string OPS_ID PK "운영상태 ID(OPS_ID)"
+        date CHECK_DT "점검 일시(CHECK_DT)"
+        string STATUS "상태(STATUS)"
+        string METRIC_SUMMARY "지표 요약(METRIC_SUMMARY)"
+        string NOTE "비고(NOTE)"
+    }
+    OPS_CI_MAP {
+        string MAP_ID PK "매핑 ID(MAP_ID)"
+        string OPS_ID FK "운영상태 ID(OPS_ID)"
+        string CI_ID FK "구성항목 ID(CI_ID)"
+        string NOTE "비고(NOTE)"
+    }
+    EVENT {
+        string EVENT_ID PK "이벤트 ID(EVENT_ID)"
+        string EVENT_TITLE "이벤트 제목(EVENT_TITLE)"
+        string EVENT_TYPE "이벤트 유형(EVENT_TYPE)"
+        string CI_ID FK "구성항목 ID(CI_ID)"
+        string SOURCE_OPS_ID FK "감지 운영상태 ID(SOURCE_OPS_ID)"
+        date DETECTED_DT "감지 일시(DETECTED_DT)"
+        string EVENT_STATUS "이벤트 상태(EVENT_STATUS)"
+        string ESCALATED_INCIDENT_ID FK "확대 장애 ID(ESCALATED_INCIDENT_ID)"
+    }
+    TEST_CASE {
+        string TEST_ID PK "테스트 ID(TEST_ID)"
+        string DEPLOY_ID FK "배포 ID(DEPLOY_ID)"
+        string TEST_TYPE "테스트 유형(TEST_TYPE)"
+        string TEST_RESULT "테스트 결과(TEST_RESULT)"
+        date TESTED_DT "테스트 일시(TESTED_DT)"
+        string TESTER_TEAM "테스트 담당 부서(TESTER_TEAM)"
+        string NOTE "비고(NOTE)"
+    }
+    INTERFACE {
+        string INTERFACE_ID PK "연계 ID(INTERFACE_ID)"
+        string INTERFACE_NAME "연계명(INTERFACE_NAME)"
+        string EXTERNAL_SYSTEM_NAME "외부 시스템명(EXTERNAL_SYSTEM_NAME)"
+        string PROTOCOL "프로토콜(PROTOCOL)"
+        string STATUS "상태(STATUS)"
+        date LAST_CHECK_DT "최종 점검 일시(LAST_CHECK_DT)"
+        string OWNER_TEAM "담당 부서(OWNER_TEAM)"
+        string VALIDATED_BY_TEST_ID FK "검증 테스트 ID(VALIDATED_BY_TEST_ID)"
+        string BASELINE_ID FK "베이스라인 ID(BASELINE_ID)"
+    }
+    INTERFACE_CI_MAP {
+        string MAP_ID PK "매핑 ID(MAP_ID)"
+        string INTERFACE_ID FK "연계 ID(INTERFACE_ID)"
+        string CI_ID FK "구성항목 ID(CI_ID)"
+        string NOTE "비고(NOTE)"
+    }
+    BACKUP {
+        string BACKUP_ID PK "백업 ID(BACKUP_ID)"
+        string ACTION_TYPE "조치 유형(ACTION_TYPE)"
+        date BACKUP_DT "백업 일시(BACKUP_DT)"
+        string STATUS "상태(STATUS)"
+        date RETENTION_UNTIL_DT "보관 만료일(RETENTION_UNTIL_DT)"
+        string RESTORED_FROM_BACKUP_ID FK "복원 원본 백업 ID(RESTORED_FROM_BACKUP_ID)"
+        string OWNER_TEAM "담당 부서(OWNER_TEAM)"
+    }
+    BACKUP_CI_MAP {
+        string MAP_ID PK "매핑 ID(MAP_ID)"
+        string BACKUP_ID FK "백업 ID(BACKUP_ID)"
+        string CI_ID FK "구성항목 ID(CI_ID)"
+        string NOTE "비고(NOTE)"
+    }
+
+    CHANGE ||--o{ CHANGE_CI_MAP : "연결"
+    CI ||--o{ CHANGE_CI_MAP : "연결"
+    INCIDENT ||--o{ INCIDENT_CI_MAP : "연결"
+    CI ||--o{ INCIDENT_CI_MAP : "연결"
+    CHANGE ||--o{ INCIDENT : "CAUSED_BY_CHG_TICKET_ID"
+    INCIDENT ||--o{ CHANGE : "TRIGGERED_BY_INCIDENT_ID"
+    CHANGE ||--o{ CI : "CHG_TICKET_ID(최초등록)"
+    CI ||--o{ CI : "PARENT_CI_ID(계층)"
+    CI ||--o{ CI_HISTORY : "이력"
+    PROBLEM ||--o{ PROBLEM_INCIDENT_MAP : "연결"
+    INCIDENT ||--o{ PROBLEM_INCIDENT_MAP : "연결"
+    PROBLEM ||--o{ BASELINE : "RESOLVED_PROBLEM_ID"
+    DEPLOY ||--o{ DEPLOY_CHG_MAP : "연결"
+    CHANGE ||--o{ DEPLOY_CHG_MAP : "연결"
+    DEPLOY ||--o{ TEST_CASE : "DEPLOY_ID"
+    DEPLOY ||--o{ SLA : "DEPLOY_ID"
+    REQUEST ||--o{ REQUEST_INCIDENT_MAP : "연결"
+    INCIDENT ||--o{ REQUEST_INCIDENT_MAP : "연결"
+    REQUEST ||--o{ REQUEST_CI_MAP : "연결"
+    CI ||--o{ REQUEST_CI_MAP : "연결"
+    SLA ||--o{ SLA_INCIDENT_MAP : "연결"
+    INCIDENT ||--o{ SLA_INCIDENT_MAP : "연결"
+    SLA ||--o{ SLA_OPS_MAP : "연결"
+    OPS_STATUS ||--o{ SLA_OPS_MAP : "연결"
+    BASELINE ||--o{ BASELINE_CI_MAP : "연결"
+    CI ||--o{ BASELINE_CI_MAP : "연결"
+    OPS_STATUS ||--o{ OPS_CI_MAP : "연결"
+    CI ||--o{ OPS_CI_MAP : "연결"
+    CI ||--o{ EVENT : "CI_ID"
+    OPS_STATUS ||--o{ EVENT : "SOURCE_OPS_ID"
+    INCIDENT ||--o{ EVENT : "ESCALATED_INCIDENT_ID"
+    INTERFACE ||--o{ INTERFACE_CI_MAP : "연결"
+    CI ||--o{ INTERFACE_CI_MAP : "연결"
+    TEST_CASE ||--o{ INTERFACE : "VALIDATED_BY_TEST_ID"
+    BASELINE ||--o{ INTERFACE : "BASELINE_ID"
+    BACKUP ||--o{ BACKUP_CI_MAP : "연결"
+    CI ||--o{ BACKUP_CI_MAP : "연결"
+    BACKUP ||--o{ BACKUP : "RESTORED_FROM_BACKUP_ID"
+        </div>
+      </div>
+    </div>
+
+    <p class="placeholder-note">
+      13개 ITIL practice 도메인(1_변경관리·2_장애관리·3_구성관리·6_문제관리·7_배포관리·8_요청관리·9_서비스수준관리·
+      10_형상관리·11_운영상태관리·12_이벤트관리·13_테스트관리·14_연계관리·15_백업관리) + CI 이력 테이블까지 총 26개
+      테이블(마스터 13 · CI_HISTORY 1 · 연결(매핑)테이블 12) 전체를 반영합니다. 각 도메인의 CSV 스키마가 바뀔 때마다
+      이 페이지도 함께 갱신합니다(2026-07-12 기준 최신).
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  <a href="개인정보처리방침.html" id="privacy-policy-link">개인정보처리방침</a>
+  <a href="이용약관.html">이용약관</a>
+</footer>
+
+<script src="nav.js"></script>
+<script src="policy-modal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#21252b',
+      primaryTextColor: '#edeef0',
+      primaryBorderColor: '#ff9f45',
+      lineColor: '#767c85',
+      tertiaryColor: '#1b1e23',
+      attributeBackgroundColorOdd: '#1b1e23',
+      attributeBackgroundColorEven: '#21252b'
+    }
+  });
+
+  // Mermaid는 svg에 width="100%"를 박아넣어 컨테이너 폭에 맞춰 축소시킨다(CSS max-width/width
+  // 오버라이드로도 안 풀림 — SVG 자체 속성이라 우선순위가 높음). viewBox의 실제 크기를 읽어
+  // width/height를 픽셀로 강제 지정해야 원본 크기 그대로 렌더링되고 확대/축소가 의도대로 동작한다.
+  function fixSvgNativeSize() {
+    document.querySelectorAll('.erd-mermaid-scroll svg').forEach((svg) => {
+      const vb = svg.viewBox && svg.viewBox.baseVal;
+      if (vb && vb.width) {
+        svg.style.width = vb.width + 'px';
+        svg.style.height = vb.height + 'px';
+      }
+    });
+  }
+  setTimeout(fixSvgNativeSize, 300);
+
+  function showErdModel(which) {
+    document.getElementById('erd-diagram-logical').classList.toggle('erd-mermaid-hidden', which !== 'logical');
+    document.getElementById('erd-diagram-physical').classList.toggle('erd-mermaid-hidden', which !== 'physical');
+    document.getElementById('erd-btn-logical').classList.toggle('active', which === 'logical');
+    document.getElementById('erd-btn-physical').classList.toggle('active', which === 'physical');
+    document.getElementById('erd-caption').textContent = which === 'logical'
+      ? '논리 모델: 13개 ITIL practice 도메인의 핵심 엔티티와 관계만 표시(구현 세부는 생략). 컬럼은 한글명(영문 컬럼명)으로 표시됩니다.'
+      : '물리 모델: 실제 CSV 스키마 기준 전체 26개 테이블 · 전체 컬럼(한글명(영문 컬럼명)) · PK/FK를 표시.';
+    erdZoomReset();
+  }
+
+  // ---- 확대/축소 + 드래그 이동 --------------------------------------------------
+  // 26개 테이블 물리 모델은 가로 스크롤만으로는 한눈에 보기 어려워, 뷰포트를 고정 크기로
+  // 잘라내고(overflow:hidden) 내부 컨텐츠에 CSS transform(scale+translate)을 걸어
+  // 마우스 휠/버튼으로 확대·축소, 드래그로 이동할 수 있게 한다.
+  let erdScale = 1;
+  let erdPanX = 0;
+  let erdPanY = 0;
+
+  function applyErdTransform() {
+    const content = document.getElementById('erd-zoom-content');
+    content.style.transform = `translate(${erdPanX}px, ${erdPanY}px) scale(${erdScale})`;
+    document.getElementById('erd-zoom-label').textContent = Math.round(erdScale * 100) + '%';
+  }
+
+  function erdZoom(factor) {
+    erdScale = Math.min(3, Math.max(0.2, erdScale * factor));
+    applyErdTransform();
+  }
+
+  function erdZoomReset() {
+    erdScale = 1;
+    erdPanX = 0;
+    erdPanY = 0;
+    applyErdTransform();
+  }
+
+  (function setupErdPanZoom() {
+    const viewport = document.getElementById('erd-viewport');
+    let dragging = false;
+    let startX = 0;
+    let startY = 0;
+    let startPanX = 0;
+    let startPanY = 0;
+
+    viewport.addEventListener('mousedown', (e) => {
+      dragging = true;
+      viewport.classList.add('erd-dragging');
+      startX = e.clientX;
+      startY = e.clientY;
+      startPanX = erdPanX;
+      startPanY = erdPanY;
+      e.preventDefault();
+    });
+    window.addEventListener('mousemove', (e) => {
+      if (!dragging) return;
+      erdPanX = startPanX + (e.clientX - startX);
+      erdPanY = startPanY + (e.clientY - startY);
+      applyErdTransform();
+    });
+    window.addEventListener('mouseup', () => {
+      dragging = false;
+      viewport.classList.remove('erd-dragging');
+    });
+    viewport.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      erdZoom(e.deltaY < 0 ? 1.08 : 1 / 1.08);
+    }, { passive: false });
+  })();
+
+  renderNav('erd');
+</script>
+</body>
+</html>
