@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ERD · AI활성화진흥공단</title>
+  <link rel="icon" href="/ITSM_CURSOR/assets/logo-mark.png" />
+  <link rel="stylesheet" href="/ITSM_CURSOR/assets/portal.css" />
+</head>
+<body>
+  <div class="app">
+    
+<aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <img src="/ITSM_CURSOR/assets/logo-mark.png" alt="logo" />
+    <div>
+      <div class="brand-title">AI활성화진흥공단</div>
+      <div class="brand-sub">표준운영관리 대시보드</div>
+    </div>
+  </div>
+  <nav class="nav">
+    <a class="nav-link" href="/ITSM_CURSOR/index.html"><span>대시보드</span></a>
+    <a class="nav-link" href="/ITSM_CURSOR/wbs.html"><span>WBS 진척</span><span class="badge">100%</span></a>
+    <div class="nav-section">운영 도메인</div>
+    <a class="nav-link" href="/ITSM_CURSOR/d/change.html"><span>변경관리</span><span class="badge">29</span></a><a class="nav-link" href="/ITSM_CURSOR/d/incident.html"><span>장애관리</span><span class="badge">2</span></a><a class="nav-link" href="/ITSM_CURSOR/d/config.html"><span>구성관리</span><span class="badge">312</span></a><a class="nav-link" href="/ITSM_CURSOR/d/problem.html"><span>문제관리</span><span class="badge">1</span></a><a class="nav-link" href="/ITSM_CURSOR/d/deploy.html"><span>배포관리</span><span class="badge">5</span></a><a class="nav-link" href="/ITSM_CURSOR/d/request.html"><span>요청관리</span><span class="badge">1</span></a><a class="nav-link" href="/ITSM_CURSOR/d/sla.html"><span>서비스수준관리</span><span class="badge">1</span></a><a class="nav-link" href="/ITSM_CURSOR/d/baseline.html"><span>형상관리</span><span class="badge">2</span></a><a class="nav-link" href="/ITSM_CURSOR/d/ops.html"><span>운영상태관리</span><span class="badge">1</span></a><a class="nav-link" href="/ITSM_CURSOR/d/event.html"><span>이벤트관리</span><span class="badge">1</span></a><a class="nav-link" href="/ITSM_CURSOR/d/test.html"><span>테스트관리</span><span class="badge">2</span></a><a class="nav-link" href="/ITSM_CURSOR/d/interface.html"><span>연계관리</span><span class="badge">1</span></a><a class="nav-link" href="/ITSM_CURSOR/d/backup.html"><span>백업관리</span><span class="badge">1</span></a>
+    <div class="nav-section">기타</div>
+    <a class="nav-link active" href="/ITSM_CURSOR/erd.html"><span>ERD</span></a>
+    <a class="nav-link" href="/ITSM_CURSOR/management.html"><span>경영관리</span></a>
+  </nav>
+  <div class="sidebar-foot">대한민국 공공기관 표준운영관리 · ITIL v4 기반</div>
+</aside>
+
+    <div class="main-wrap">
+      <header class="topbar">
+        <button type="button" class="menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+        <div class="topbar-title">AI활성화진흥공단</div>
+        <span class="chip">온라인 포털</span>
+      </header>
+      <main class="content">
+        
+<header class="page-head"><div><h1>ERD</h1><p class="sub">논리 모델 (Mermaid)</p></div></header>
+<section class="card"><pre class="mermaid">
+erDiagram
+    CHANGE {
+        string CHG_TICKET_ID "변경 티켓 ID(CHG_TICKET_ID)"
+        string CHG_TITLE "변경 제목(CHG_TITLE)"
+        string CHG_STATUS "변경 상태(CHG_STATUS)"
+    }
+    INCIDENT {
+        string INCIDENT_ID "장애 ID(INCIDENT_ID)"
+        string INCIDENT_TITLE "장애 제목(INCIDENT_TITLE)"
+        string SEVERITY "심각도(SEVERITY)"
+        string INCIDENT_STATUS "장애 상태(INCIDENT_STATUS)"
+    }
+    CI {
+        string CI_ID "구성항목 ID(CI_ID)"
+        string CI_NAME "자산명(CI_NAME)"
+        string CI_CATEGORY "자산 분류(CI_CATEGORY)"
+        string STATUS "상태(STATUS)"
+    }
+    PROBLEM {
+        string PROBLEM_ID "문제 ID(PROBLEM_ID)"
+        string PROBLEM_TITLE "문제 제목(PROBLEM_TITLE)"
+        string STATUS "상태(STATUS)"
+    }
+    DEPLOY {
+        string DEPLOY_ID "배포 ID(DEPLOY_ID)"
+        string DEPLOY_NAME "배포명(DEPLOY_NAME)"
+        string DEPLOY_STATUS "배포 상태(DEPLOY_STATUS)"
+    }
+    REQUEST {
+        string REQ_ID "요청 ID(REQ_ID)"
+        string REQ_TITLE "요청 제목(REQ_TITLE)"
+        string STATUS "상태(STATUS)"
+    }
+    SLA {
+        string SLA_ID "SLA ID(SLA_ID)"
+        string SERVICE_NAME "서비스명(SERVICE_NAME)"
+        string STATUS "상태(STATUS)"
+    }
+    BASELINE {
+        string BASELINE_ID "베이스라인 ID(BASELINE_ID)"
+        string BASELINE_NAME "베이스라인명(BASELINE_NAME)"
+        string STATUS "상태(STATUS)"
+    }
+    OPS_STATUS {
+        string OPS_ID "운영상태 ID(OPS_ID)"
+        string CHECK_DT "점검 일시(CHECK_DT)"
+        string STATUS "상태(STATUS)"
+    }
+    EVENT {
+        string EVENT_ID "이벤트 ID(EVENT_ID)"
+        string EVENT_TITLE "이벤트 제목(EVENT_TITLE)"
+        string EVENT_STATUS "이벤트 상태(EVENT_STATUS)"
+    }
+    TEST_CASE {
+        string TEST_ID "테스트 ID(TEST_ID)"
+        string TEST_TYPE "테스트 유형(TEST_TYPE)"
+        string TEST_RESULT "테스트 결과(TEST_RESULT)"
+    }
+    INTERFACE {
+        string INTERFACE_ID "연계 ID(INTERFACE_ID)"
+        string INTERFACE_NAME "연계명(INTERFACE_NAME)"
+        string STATUS "상태(STATUS)"
+    }
+    BACKUP {
+        string BACKUP_ID "백업 ID(BACKUP_ID)"
+        string ACTION_TYPE "조치 유형(ACTION_TYPE)"
+        string STATUS "상태(STATUS)"
+    }
+
+    CHANGE }o--o{ CI : "N:M(CHANGE_CI_MAP)"
+    INCIDENT }o--o{ CI : "N:M(INCIDENT_CI_MAP)"
+    CHANGE ||--o{ INCIDENT : "촉발(TRIGGERED_BY)"
+    INCIDENT ||--o{ CHANGE : "원인(CAUSED_BY)"
+    CHANGE ||--o{ CI : "최초등록"
+    CI ||--o{ CI : "상위-하위 계층"
+    PROBLEM }o--o{ INCIDENT : "N:M(PROBLEM_INCIDENT_MAP)"
+    PROBLEM ||--o{ BASELINE : "영구조치 to 베이스라인"
+    DEPLOY }o--o{ CHANGE : "N:M(DEPLOY_CHG_MAP)"
+    DEPLOY ||--o{ TEST_CASE : "검증대상"
+    DEPLOY ||--o{ SLA : "SLA 모니터링"
+    REQUEST }o--o{ INCIDENT : "N:M(REQUEST_INCIDENT_MAP)"
+    REQUEST }o--o{ CI : "N:M(REQUEST_CI_MAP)"
+    SLA }o--o{ INCIDENT : "N:M(SLA_INCIDENT_MAP)"
+    SLA }o--o{ OPS_STATUS : "N:M(SLA_OPS_MAP)"
+    BASELINE }o--o{ CI : "N:M(BASELINE_CI_MAP)"
+    OPS_STATUS }o--o{ CI : "N:M(OPS_CI_MAP)"
+    CI ||--o{ EVENT : "발생 CI"
+    OPS_STATUS ||--o{ EVENT : "감지 소스"
+    INCIDENT ||--o{ EVENT : "장애로 확대"
+    INTERFACE }o--o{ CI : "N:M(INTERFACE_CI_MAP)"
+    TEST_CASE ||--o{ INTERFACE : "연동 검증"
+    BASELINE ||--o{ INTERFACE : "연동 버전"
+    BACKUP }o--o{ CI : "N:M(BACKUP_CI_MAP)"
+    BACKUP ||--o{ BACKUP : "복원 원본"
+</pre></section>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+
+      </main>
+    </div>
+  </div>
+  <div class="backdrop" onclick="document.getElementById('sidebar').classList.remove('open')"></div>
+</body>
+</html>

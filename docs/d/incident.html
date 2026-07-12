@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>장애관리 · AI활성화진흥공단</title>
+  <link rel="icon" href="/ITSM_CURSOR/assets/logo-mark.png" />
+  <link rel="stylesheet" href="/ITSM_CURSOR/assets/portal.css" />
+</head>
+<body>
+  <div class="app">
+    
+<aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <img src="/ITSM_CURSOR/assets/logo-mark.png" alt="logo" />
+    <div>
+      <div class="brand-title">AI활성화진흥공단</div>
+      <div class="brand-sub">표준운영관리 대시보드</div>
+    </div>
+  </div>
+  <nav class="nav">
+    <a class="nav-link" href="/ITSM_CURSOR/index.html"><span>대시보드</span></a>
+    <a class="nav-link" href="/ITSM_CURSOR/wbs.html"><span>WBS 진척</span><span class="badge">100%</span></a>
+    <div class="nav-section">운영 도메인</div>
+    <a class="nav-link" href="/ITSM_CURSOR/d/change.html"><span>변경관리</span><span class="badge">29</span></a><a class="nav-link active" href="/ITSM_CURSOR/d/incident.html"><span>장애관리</span><span class="badge">2</span></a><a class="nav-link" href="/ITSM_CURSOR/d/config.html"><span>구성관리</span><span class="badge">312</span></a><a class="nav-link" href="/ITSM_CURSOR/d/problem.html"><span>문제관리</span><span class="badge">1</span></a><a class="nav-link" href="/ITSM_CURSOR/d/deploy.html"><span>배포관리</span><span class="badge">5</span></a><a class="nav-link" href="/ITSM_CURSOR/d/request.html"><span>요청관리</span><span class="badge">1</span></a><a class="nav-link" href="/ITSM_CURSOR/d/sla.html"><span>서비스수준관리</span><span class="badge">1</span></a><a class="nav-link" href="/ITSM_CURSOR/d/baseline.html"><span>형상관리</span><span class="badge">2</span></a><a class="nav-link" href="/ITSM_CURSOR/d/ops.html"><span>운영상태관리</span><span class="badge">1</span></a><a class="nav-link" href="/ITSM_CURSOR/d/event.html"><span>이벤트관리</span><span class="badge">1</span></a><a class="nav-link" href="/ITSM_CURSOR/d/test.html"><span>테스트관리</span><span class="badge">2</span></a><a class="nav-link" href="/ITSM_CURSOR/d/interface.html"><span>연계관리</span><span class="badge">1</span></a><a class="nav-link" href="/ITSM_CURSOR/d/backup.html"><span>백업관리</span><span class="badge">1</span></a>
+    <div class="nav-section">기타</div>
+    <a class="nav-link" href="/ITSM_CURSOR/erd.html"><span>ERD</span></a>
+    <a class="nav-link" href="/ITSM_CURSOR/management.html"><span>경영관리</span></a>
+  </nav>
+  <div class="sidebar-foot">대한민국 공공기관 표준운영관리 · ITIL v4 기반</div>
+</aside>
+
+    <div class="main-wrap">
+      <header class="topbar">
+        <button type="button" class="menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+        <div class="topbar-title">AI활성화진흥공단</div>
+        <span class="chip">온라인 포털</span>
+      </header>
+      <main class="content">
+        
+<header class="page-head">
+  <div>
+    <h1>장애관리</h1>
+    <p class="sub">온라인 조회 뷰 · 전체 2건</p>
+  </div>
+  <span class="chip">읽기 전용</span>
+</header>
+<section class="card table-card"><div class="table-wrap"><table><thead><tr><th>장애 ID</th><th>장애 제목</th><th>심각도</th><th>감지 일시</th><th>복구 일시</th><th>근본 원인</th><th>조치 내용</th><th>처리자 ID</th><th>장애 상태</th><th>원인 변경 ID</th></tr></thead><tbody><tr><td>INC_20260711_001</td><td>Streamlit 홈.py 대시보드 CHANGE.csv 파싱 에러로 서비스 장애</td><td>SEV3</td><td>2026-07-11 14:00</td><td>2026-07-11 14:10</td><td>CHG_20260711_003 등록 시 CHANGE.csv의 RELATED_DESC 필드에 쉼표가 포함됐으나 따옴표로 감싸지 않아 CSV 컬럼이 12개에서 14개로 밀림. Streamlit Cloud에서 pandas.read_csv(CHANGE.csv)가 ParserError로 실패해 홈 대시보드 전체가 다운됨.</td><td>해당 RELATED_DESC 필드를 큰따옴표로 감싸 12개 컬럼으로 복원. CI/CHANGE/INCIDENT/CHANGE_CI_MAP/INCIDENT_CI_MAP 전체를 pandas로 재검증 후 커밋·push하여 Streamlit Community Cloud 자동 재배포.</td><td>USR_001</td><td>종료</td><td>CHG_20260711_003</td></tr><tr><td>INC_20260711_002</td><td>Streamlit 배포판 상단 로고 크기 미반영 반복 - 사용자 요청 3회에도 미해결</td><td>SEV3</td><td>2026-07-11 16:30</td><td>2026-07-11 16:45</td><td>로고 크기 확대 작업(CHG_20260711_007/008/010)을 정적 HTML 버전(index.html/style.css/nav.js)에만 적용하고 실제 사용자가 보는 Streamlit 배포판(홈.py/pages/*.py, st.logo() 사용)에는 반영하지 않음. st.logo()는 size 파라미터가 small/medium/large만 지원해 애초에 400px 이상 확대가 불가능한 API였는데 이를 인지하지 못한 채 정적 버전만 3차례 반복 수정. 같은 세션에서 개인정보처리방침(CHG_20260711_006), 구성관리 3D 배치도(CHG_20260711_005)에 이어 세 번째로 반복된 동일 유형(정적/Streamlit 미동기화) 실수.</td><td>st.logo()는 사이드바 로고 용도로 유지하고, 폭을 직접 지정 가능한 st.image(width=420)로 별도 로고를 홈.py 및 pages/1~3 전체 페이지 상단에 추가(CHG_20260711_011). 아이콘+기관명 크롭에 크림색 배경을 입힌 logo-nav-flat.png 신규 제작.</td><td>USR_001</td><td>종료</td><td>CHG_20260711_007</td></tr></tbody></table></div></section>
+
+      </main>
+    </div>
+  </div>
+  <div class="backdrop" onclick="document.getElementById('sidebar').classList.remove('open')"></div>
+</body>
+</html>

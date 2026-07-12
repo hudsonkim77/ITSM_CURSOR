@@ -3,89 +3,72 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AI활성화진흥공단 · ITSM 통합관리 대시보드</title>
-  <style>
-    :root { --bg:#f4f6fb; --card:#fff; --text:#101828; --muted:#667085; --line:#e5e9f2; --brand:#3a5eef; }
-    * { box-sizing:border-box; }
-    body { margin:0; font-family:"Malgun Gothic","Apple SD Gothic Neo",sans-serif; background:var(--bg); color:var(--text); }
-    .wrap { max-width:1100px; margin:0 auto; padding:28px 20px 48px; }
-    .org { font-size:13px; font-weight:700; color:var(--brand); }
-    h1 { margin:4px 0 0; font-size:26px; }
-    .sub { margin:6px 0 0; color:var(--muted); font-size:14px; }
-    header { display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px; align-items:flex-end; margin-bottom:22px; }
-    .chip { padding:4px 10px; border-radius:999px; background:#d1fae5; color:#047857; font-size:12px; font-weight:600; }
-    .kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:18px; }
-    @media (max-width:900px) { .kpis { grid-template-columns:repeat(2,1fr); } }
-    .card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px 18px; }
-    .kpi label { font-size:13px; color:var(--muted); }
-    .kpi .v { margin-top:8px; font-size:30px; font-weight:800; }
-    .grid2 { display:grid; grid-template-columns:1.4fr 1fr; gap:14px; margin-bottom:18px; }
-    @media (max-width:900px) { .grid2 { grid-template-columns:1fr; } }
-    h2 { margin:0 0 12px; font-size:16px; }
-    .lists { list-style:none; margin:0; padding:0; }
-    .lists li { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--line); font-size:14px; }
-    .domains { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:10px; margin-bottom:18px; }
-    .dom .c { font-size:22px; font-weight:800; margin-top:6px; }
-    .dom .t { font-size:13px; color:var(--muted); }
-    table { width:100%; border-collapse:collapse; font-size:13px; }
-    th, td { padding:10px 12px; text-align:left; border-bottom:1px solid var(--line); }
-    th { background:#f8fafc; color:var(--muted); font-size:11px; }
-    .mono { font-family:ui-monospace,Consolas,monospace; font-weight:700; color:var(--brand); }
-    .empty { text-align:center; color:#98a2b3; padding:24px; }
-    .foot { margin-top:18px; font-size:12px; color:var(--muted); line-height:1.55; }
-    a { color:var(--brand); }
-    .move { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px; }
-    .ok { background:#ecfdf5; } .bad { background:#fff1f2; }
-  </style>
+  <title>대시보드 · AI활성화진흥공단</title>
+  <link rel="icon" href="/ITSM_CURSOR/assets/logo-mark.png" />
+  <link rel="stylesheet" href="/ITSM_CURSOR/assets/portal.css" />
 </head>
 <body>
-  <div class="wrap">
-    <div class="org">AI활성화진흥공단</div>
-    <header>
-      <div>
-        <h1>ITSM 통합관리 대시보드</h1>
-        <p class="sub">구성·변경·장애·문제 현황 온라인 뷰</p>
-      </div>
-      <span class="chip">● 온라인 공개</span>
-    </header>
-
-    <section class="kpis"><div class="card kpi"><label>총 자산 수</label><div class="v">312</div></div><div class="card kpi"><label>변경 건수</label><div class="v">29</div></div><div class="card kpi"><label>장애 건수</label><div class="v">2</div></div><div class="card kpi"><label>문제 건수</label><div class="v">1</div></div></section>
-
-    <section class="grid2">
-      <div class="card">
-        <h2>카테고리별 자산 현황</h2>
-        <ul class="lists"><li><span>Storage</span><b>115</b></li><li><span>Staff</span><b>30</b></li><li><span>PC</span><b>30</b></li><li><span>VM</span><b>30</b></li><li><span>Server</span><b>20</b></li><li><span>Internal_Security_Sol</span><b>15</b></li><li><span>DMZ_Compute</span><b>15</b></li><li><span>L2_PAGE</span><b>12</b></li><li><span>Network_Security</span><b>10</b></li><li><span>Switch</span><b>10</b></li><li><span>Network_Equipment</span><b>8</b></li><li><span>L3_PAGE</span><b>8</b></li></ul>
-      </div>
-      <div class="card">
-        <h2>자산 상태 분포</h2>
-        <ul class="lists"><li><span>운영중</span><b>261</b></li><li><span>활성</span><b>50</b></li><li><span>대기</span><b>1</b></li></ul>
-        <div class="move">
-          <div class="card ok"><div style="font-size:12px;color:#047857;">자산 추가</div><div style="font-weight:800;color:#047857;">4</div></div>
-          <div class="card bad"><div style="font-size:12px;color:#be123c;">자산 삭제</div><div style="font-weight:800;color:#be123c;">0</div></div>
-        </div>
-      </div>
-    </section>
-
-    <h2 style="margin-bottom:10px;">운영 도메인 현황</h2>
-    <section class="domains"><div class="card dom"><div class="t">변경관리</div><div class="c">29</div></div><div class="card dom"><div class="t">장애관리</div><div class="c">2</div></div><div class="card dom"><div class="t">구성관리</div><div class="c">312</div></div><div class="card dom"><div class="t">문제관리</div><div class="c">1</div></div><div class="card dom"><div class="t">배포관리</div><div class="c">5</div></div><div class="card dom"><div class="t">요청관리</div><div class="c">1</div></div><div class="card dom"><div class="t">서비스수준관리</div><div class="c">1</div></div><div class="card dom"><div class="t">형상관리</div><div class="c">2</div></div><div class="card dom"><div class="t">운영상태관리</div><div class="c">1</div></div><div class="card dom"><div class="t">이벤트관리</div><div class="c">1</div></div><div class="card dom"><div class="t">테스트관리</div><div class="c">2</div></div><div class="card dom"><div class="t">연계관리</div><div class="c">1</div></div><div class="card dom"><div class="t">백업관리</div><div class="c">1</div></div></section>
-
-    <section class="card" style="padding:0;overflow:hidden;">
-      <div style="padding:14px 18px;border-bottom:1px solid var(--line);"><h2 style="margin:0;">최근 변경 이력</h2></div>
-      <div style="overflow:auto;">
-        <table>
-          <thead><tr><th>변경 티켓 ID</th><th>변경 제목</th><th>유형</th><th>상태</th><th>적용 일시</th></tr></thead>
-          <tbody><tr><td class="mono">CHG_20260712_009</td><td>초기 베이스라인 정의서 v1.1(DDL 개정판) 발행</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono">CHG_20260712_008</td><td>통합 초기 베이스라인 v1.0 확정 및 자산-형상 DB 연결 스키마 개선</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono">CHG_20260712_007</td><td>실데이터 없던 7개 관리 화면에 가상 예시 데이터 1건씩 등록</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono">CHG_20260712_006</td><td>필드값 없는 변경 티켓 9건 정리(CI·CHANGE_CI_MAP 참조 포함 일괄 정리)</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono">CHG_20260712_005</td><td>경영관리에 구축산출물 폴더 신설(테스트결과서·프로그램명세서·DB명세서·아키텍처결과서·표준정의서 5종 PDF)</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono">CHG_20260712_004</td><td>전체 관리 페이지(장애·문제·배포·요청·SLA·형상·운영상태·이벤트·테스트·연계·백업)에 변경관리와 동일한 CRUD 화면 구현</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono">CHG_20260712_003</td><td>변경요청 조회 표의 컬럼 헤더를 한글로 치환</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono">CHG_20260712_002</td><td>ERD 페이지 전체 폭 활용, 컬럼명 한글(영어) 표기, 확대/축소·드래그 이동 인터랙션 추가</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr></tbody>
-        </table>
-      </div>
-    </section>
-
-    <p class="foot">
-      생성시각: 2026-07-12 23:36<br/>
-      이 페이지 URL: <a href="https://hudsonkim77.github.io/ITSM_CURSOR/">https://hudsonkim77.github.io/ITSM_CURSOR/</a><br/>
-      소스: <a href="https://github.com/hudsonkim77/ITSM_CURSOR">github.com/hudsonkim77/ITSM_CURSOR</a>
-    </p>
+  <div class="app">
+    
+<aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <img src="/ITSM_CURSOR/assets/logo-mark.png" alt="logo" />
+    <div>
+      <div class="brand-title">AI활성화진흥공단</div>
+      <div class="brand-sub">표준운영관리 대시보드</div>
+    </div>
   </div>
-  <!-- data snapshot (검증용) -->
-  <script type="application/json" id="dash-data">{"generatedAt": "2026-07-12 23:36", "kpis": {"totalAssets": 312, "change": 29, "incident": 2, "problem": 1, "ciAdded": 4, "ciRemoved": 0}, "category": [{"label": "Storage", "count": 115}, {"label": "Staff", "count": 30}, {"label": "PC", "count": 30}, {"label": "VM", "count": 30}, {"label": "Server", "count": 20}, {"label": "Internal_Security_Sol", "count": 15}, {"label": "DMZ_Compute", "count": 15}, {"label": "L2_PAGE", "count": 12}, {"label": "Network_Security", "count": 10}, {"label": "Switch", "count": 10}, {"label": "Network_Equipment", "count": 8}, {"label": "L3_PAGE", "count": 8}, {"label": "L1_PAGE", "count": 4}, {"label": "Peripheral", "count": 3}, {"label": "Security_Management", "count": 2}], "statusDistribution": [{"label": "운영중", "count": 261}, {"label": "활성", "count": 50}, {"label": "대기", "count": 1}], "domainCounts": [{"title": "변경관리", "count": 29}, {"title": "장애관리", "count": 2}, {"title": "구성관리", "count": 312}, {"title": "문제관리", "count": 1}, {"title": "배포관리", "count": 5}, {"title": "요청관리", "count": 1}, {"title": "서비스수준관리", "count": 1}, {"title": "형상관리", "count": 2}, {"title": "운영상태관리", "count": 1}, {"title": "이벤트관리", "count": 1}, {"title": "테스트관리", "count": 2}, {"title": "연계관리", "count": 1}, {"title": "백업관리", "count": 1}], "recentChanges": [{"CHG_TICKET_ID": "CHG_20260712_009", "CHG_TITLE": "초기 베이스라인 정의서 v1.1(DDL 개정판) 발행", "CHG_TYPE": "표준", "CHG_STATUS": "완료", "APPLIED_DT": "2026-07-12"}, {"CHG_TICKET_ID": "CHG_20260712_008", "CHG_TITLE": "통합 초기 베이스라인 v1.0 확정 및 자산-형상 DB 연결 스키마 개선", "CHG_TYPE": "표준", "CHG_STATUS": "완료", "APPLIED_DT": "2026-07-12"}, {"CHG_TICKET_ID": "CHG_20260712_007", "CHG_TITLE": "실데이터 없던 7개 관리 화면에 가상 예시 데이터 1건씩 등록", "CHG_TYPE": "표준", "CHG_STATUS": "완료", "APPLIED_DT": "2026-07-12"}, {"CHG_TICKET_ID": "CHG_20260712_006", "CHG_TITLE": "필드값 없는 변경 티켓 9건 정리(CI·CHANGE_CI_MAP 참조 포함 일괄 정리)", "CHG_TYPE": "표준", "CHG_STATUS": "완료", "APPLIED_DT": "2026-07-12"}, {"CHG_TICKET_ID": "CHG_20260712_005", "CHG_TITLE": "경영관리에 구축산출물 폴더 신설(테스트결과서·프로그램명세서·DB명세서·아키텍처결과서·표준정의서 5종 PDF)", "CHG_TYPE": "표준", "CHG_STATUS": "완료", "APPLIED_DT": "2026-07-12"}, {"CHG_TICKET_ID": "CHG_20260712_004", "CHG_TITLE": "전체 관리 페이지(장애·문제·배포·요청·SLA·형상·운영상태·이벤트·테스트·연계·백업)에 변경관리와 동일한 CRUD 화면 구현", "CHG_TYPE": "표준", "CHG_STATUS": "완료", "APPLIED_DT": "2026-07-12"}, {"CHG_TICKET_ID": "CHG_20260712_003", "CHG_TITLE": "변경요청 조회 표의 컬럼 헤더를 한글로 치환", "CHG_TYPE": "표준", "CHG_STATUS": "완료", "APPLIED_DT": "2026-07-12"}, {"CHG_TICKET_ID": "CHG_20260712_002", "CHG_TITLE": "ERD 페이지 전체 폭 활용, 컬럼명 한글(영어) 표기, 확대/축소·드래그 이동 인터랙션 추가", "CHG_TYPE": "표준", "CHG_STATUS": "완료", "APPLIED_DT": "2026-07-12"}]}</script>
+  <nav class="nav">
+    <a class="nav-link active" href="/ITSM_CURSOR/index.html"><span>대시보드</span></a>
+    <a class="nav-link" href="/ITSM_CURSOR/wbs.html"><span>WBS 진척</span><span class="badge">100%</span></a>
+    <div class="nav-section">운영 도메인</div>
+    <a class="nav-link" href="/ITSM_CURSOR/d/change.html"><span>변경관리</span><span class="badge">29</span></a><a class="nav-link" href="/ITSM_CURSOR/d/incident.html"><span>장애관리</span><span class="badge">2</span></a><a class="nav-link" href="/ITSM_CURSOR/d/config.html"><span>구성관리</span><span class="badge">312</span></a><a class="nav-link" href="/ITSM_CURSOR/d/problem.html"><span>문제관리</span><span class="badge">1</span></a><a class="nav-link" href="/ITSM_CURSOR/d/deploy.html"><span>배포관리</span><span class="badge">5</span></a><a class="nav-link" href="/ITSM_CURSOR/d/request.html"><span>요청관리</span><span class="badge">1</span></a><a class="nav-link" href="/ITSM_CURSOR/d/sla.html"><span>서비스수준관리</span><span class="badge">1</span></a><a class="nav-link" href="/ITSM_CURSOR/d/baseline.html"><span>형상관리</span><span class="badge">2</span></a><a class="nav-link" href="/ITSM_CURSOR/d/ops.html"><span>운영상태관리</span><span class="badge">1</span></a><a class="nav-link" href="/ITSM_CURSOR/d/event.html"><span>이벤트관리</span><span class="badge">1</span></a><a class="nav-link" href="/ITSM_CURSOR/d/test.html"><span>테스트관리</span><span class="badge">2</span></a><a class="nav-link" href="/ITSM_CURSOR/d/interface.html"><span>연계관리</span><span class="badge">1</span></a><a class="nav-link" href="/ITSM_CURSOR/d/backup.html"><span>백업관리</span><span class="badge">1</span></a>
+    <div class="nav-section">기타</div>
+    <a class="nav-link" href="/ITSM_CURSOR/erd.html"><span>ERD</span></a>
+    <a class="nav-link" href="/ITSM_CURSOR/management.html"><span>경영관리</span></a>
+  </nav>
+  <div class="sidebar-foot">대한민국 공공기관 표준운영관리 · ITIL v4 기반</div>
+</aside>
+
+    <div class="main-wrap">
+      <header class="topbar">
+        <button type="button" class="menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+        <div class="topbar-title">AI활성화진흥공단</div>
+        <span class="chip">온라인 포털</span>
+      </header>
+      <main class="content">
+        
+<header class="page-head">
+  <div>
+    <h1>ITSM 통합관리 대시보드</h1>
+    <p class="sub">구성·변경·장애·문제 현황을 한눈에 관제합니다.</p>
+  </div>
+  <span class="chip ok">● 온라인 CSV 스냅샷</span>
+</header>
+<section class="kpis"><div class="card kpi"><label>총 자산 수</label><div class="v">312</div></div><div class="card kpi"><label>변경 건수</label><div class="v">29</div></div><div class="card kpi"><label>장애 건수</label><div class="v">2</div></div><div class="card kpi"><label>문제 건수</label><div class="v">1</div></div></section>
+<section class="grid2">
+  <div class="card"><h2>카테고리별 자산 현황</h2><ul class="lists"><li><span>Storage</span><b>115</b></li><li><span>Staff</span><b>30</b></li><li><span>PC</span><b>30</b></li><li><span>VM</span><b>30</b></li><li><span>Server</span><b>20</b></li><li><span>Internal_Security_Sol</span><b>15</b></li><li><span>DMZ_Compute</span><b>15</b></li><li><span>L2_PAGE</span><b>12</b></li><li><span>Network_Security</span><b>10</b></li><li><span>Switch</span><b>10</b></li><li><span>Network_Equipment</span><b>8</b></li><li><span>L3_PAGE</span><b>8</b></li><li><span>L1_PAGE</span><b>4</b></li><li><span>Peripheral</span><b>3</b></li><li><span>Security_Management</span><b>2</b></li></ul></div>
+  <div class="card"><h2>자산 상태 분포</h2><ul class="lists"><li><span>운영중</span><b>261</b></li><li><span>활성</span><b>50</b></li><li><span>대기</span><b>1</b></li></ul>
+    <div class="move">
+      <div class="mini ok"><span>자산 추가</span><b>4</b></div>
+      <div class="mini bad"><span>자산 삭제</span><b>0</b></div>
+    </div>
+  </div>
+</section>
+<h2 class="sec-title">운영 도메인 바로가기</h2>
+<section class="domains"><a class="card dom" href="/ITSM_CURSOR/d/change.html"><div class="t">변경관리</div><div class="c">29</div></a><a class="card dom" href="/ITSM_CURSOR/d/incident.html"><div class="t">장애관리</div><div class="c">2</div></a><a class="card dom" href="/ITSM_CURSOR/d/config.html"><div class="t">구성관리</div><div class="c">312</div></a><a class="card dom" href="/ITSM_CURSOR/d/problem.html"><div class="t">문제관리</div><div class="c">1</div></a><a class="card dom" href="/ITSM_CURSOR/d/deploy.html"><div class="t">배포관리</div><div class="c">5</div></a><a class="card dom" href="/ITSM_CURSOR/d/request.html"><div class="t">요청관리</div><div class="c">1</div></a><a class="card dom" href="/ITSM_CURSOR/d/sla.html"><div class="t">서비스수준관리</div><div class="c">1</div></a><a class="card dom" href="/ITSM_CURSOR/d/baseline.html"><div class="t">형상관리</div><div class="c">2</div></a><a class="card dom" href="/ITSM_CURSOR/d/ops.html"><div class="t">운영상태관리</div><div class="c">1</div></a><a class="card dom" href="/ITSM_CURSOR/d/event.html"><div class="t">이벤트관리</div><div class="c">1</div></a><a class="card dom" href="/ITSM_CURSOR/d/test.html"><div class="t">테스트관리</div><div class="c">2</div></a><a class="card dom" href="/ITSM_CURSOR/d/interface.html"><div class="t">연계관리</div><div class="c">1</div></a><a class="card dom" href="/ITSM_CURSOR/d/backup.html"><div class="t">백업관리</div><div class="c">1</div></a></section>
+<section class="card table-card">
+  <div class="card-head"><h2>최근 변경 이력</h2><a href="/ITSM_CURSOR/d/change.html">전체 보기 →</a></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>변경 티켓 ID</th><th>변경 제목</th><th>유형</th><th>상태</th><th>적용 일시</th></tr></thead>
+    <tbody><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_009</a></td><td>초기 베이스라인 정의서 v1.1(DDL 개정판) 발행</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_008</a></td><td>통합 초기 베이스라인 v1.0 확정 및 자산-형상 DB 연결 스키마 개선</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_007</a></td><td>실데이터 없던 7개 관리 화면에 가상 예시 데이터 1건씩 등록</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_006</a></td><td>필드값 없는 변경 티켓 9건 정리(CI·CHANGE_CI_MAP 참조 포함 일괄 정리)</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_005</a></td><td>경영관리에 구축산출물 폴더 신설(테스트결과서·프로그램명세서·DB명세서·아키텍처결과서·표준정의서 5종 PDF)</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_004</a></td><td>전체 관리 페이지(장애·문제·배포·요청·SLA·형상·운영상태·이벤트·테스트·연계·백업)에 변경관리와 동일한 CRUD 화면 구현</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_003</a></td><td>변경요청 조회 표의 컬럼 헤더를 한글로 치환</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_002</a></td><td>ERD 페이지 전체 폭 활용, 컬럼명 한글(영어) 표기, 확대/축소·드래그 이동 인터랙션 추가</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr></tbody>
+  </table></div>
+</section>
+<p class="foot">생성: 2026-07-12 23:39 · 읽기 전용 공개 뷰 · CRUD는 로컬 서버에서 이용</p>
+
+      </main>
+    </div>
+  </div>
+  <div class="backdrop" onclick="document.getElementById('sidebar').classList.remove('open')"></div>
 </body>
 </html>
