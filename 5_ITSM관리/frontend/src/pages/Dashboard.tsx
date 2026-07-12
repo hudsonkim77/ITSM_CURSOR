@@ -53,12 +53,13 @@ export default function Dashboard() {
   if (!data) return <div className="text-slate-400">불러오는 중…</div>;
 
   const barData = [...data.category].sort((a, b) => b.count - a.count);
-  const colors = ["#3a5eef", "#5b84fa", "#8fb0ff"];
-
   const STATUS_LABELS: Record<string, string> = {
     OPERATIONAL: "운영중", Active: "활성", STANDBY: "대기", 미지정: "미지정",
   };
-  const donutColors = ["#3a5eef", "#22c3a6", "#f4a63b", "#8fb0ff", "#e5679a"];
+  const colors = dark ? ["#00e5ff", "#39ff14", "#7df9ff"] : ["#3a5eef", "#5b84fa", "#8fb0ff"];
+  const donutColors = dark
+    ? ["#00e5ff", "#39ff14", "#fbbf24", "#7df9ff", "#ff7ac8"]
+    : ["#3a5eef", "#22c3a6", "#f4a63b", "#8fb0ff", "#e5679a"];
   const donutData = data.statusDistribution.map((s) => ({
     name: STATUS_LABELS[s.status] || s.status,
     value: s.count,

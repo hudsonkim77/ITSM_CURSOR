@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import json
+import math
 import re
 import shutil
 from datetime import datetime
@@ -274,12 +275,12 @@ def layout(title: str, active: str, body: str, domain_counts: dict[str, int], wb
       </main>
       <footer class="site-footer">
         <div class="site-footer-inner">
-          <span class="footer-org">AI활성화진흥공단 · 표준운영관리 포털</span>
           <nav class="footer-links" aria-label="약관">
             <button type="button" class="footer-link" data-legal="legal-privacy">개인정보 처리방침</button>
             <span class="footer-sep" aria-hidden="true">|</span>
             <button type="button" class="footer-link" data-legal="legal-terms">이용약관</button>
           </nav>
+          <span class="footer-org">AI활성화진흥공단 · 표준운영관리 포털</span>
         </div>
       </footer>
     </div>
@@ -331,6 +332,82 @@ def shell(active: str, domain_counts: dict[str, int], wbs_pct: int) -> str:
 """
 
 
+def svg_donut(items: list[tuple[str, int]], light_colors: list[str], dark_colors: list[str]) -> str:
+    """자산 상태 도넛 차트 (라이트/다크 색상 이중 레이어)."""
+    total = sum(v for _, v in items) or 1
+    if not items:
+        return '<p class="empty">상태 데이터가 없습니다.</p>'
+
+    def arcs(colors: list[str], cls: str) -> str:
+        parts = []
+        acc = 0.0
+        cx = cy = 50
+        r, stroke = 36, 14
+        for i, (label, value) in enumerate(items):
+            frac = value / total
+            start = acc * 360.0
+            end = (acc + frac) * 360.0
+            acc += frac
+            if frac <= 0:
+                continue
+            if frac >= 0.999:
+                parts.append(
+                    f'<circle class="{cls}" cx="{cx}" cy="{cy}" r="{r}" fill="none" '
+                    f'stroke="{colors[i % len(colors)]}" stroke-width="{stroke}" data-label="{esc(label)}"/>'
+                )
+                continue
+
+            def pt(ang: float):
+                rad = math.radians(ang - 90)
+                return cx + r * math.cos(rad), cy + r * math.sin(rad)
+
+            x1, y1 = pt(start)
+            x2, y2 = pt(end)
+            large = 1 if frac > 0.5 else 0
+            color = colors[i % len(colors)]
+            parts.append(
+                f'<path class="{cls}" d="M {x1:.3f} {y1:.3f} A {r} {r} 0 {large} 1 {x2:.3f} {y2:.3f}" '
+                f'fill="none" stroke="{color}" stroke-width="{stroke}" stroke-linecap="butt" '
+                f'data-label="{esc(label)}" data-value="{value}"/>'
+            )
+        return "".join(parts)
+
+    legend = "".join(
+        f'<li><i style="--c:{light_colors[i % len(light_colors)]};--cd:{dark_colors[i % len(dark_colors)]}"></i>'
+        f'<span>{esc(label)}</span><b>{value:,}</b></li>'
+        for i, (label, value) in enumerate(items)
+    )
+    return f"""
+<div class="donut-wrap">
+  <svg class="donut-svg" viewBox="0 0 100 100" role="img" aria-label="자산 상태 분포">
+    <circle class="donut-track" cx="50" cy="50" r="36" fill="none" stroke-width="14"/>
+    {arcs(light_colors, "donut-arc donut-arc-light")}
+    {arcs(dark_colors, "donut-arc donut-arc-dark")}
+    <text class="donut-center-label" x="50" y="47" text-anchor="middle">합계</text>
+    <text class="donut-center-value" x="50" y="58" text-anchor="middle">{total:,}</text>
+  </svg>
+  <ul class="donut-legend">{legend}</ul>
+</div>
+"""
+
+
+def hbar_chart(items: list[tuple[str, int]], light_colors: list[str], dark_colors: list[str]) -> str:
+    if not items:
+        return '<p class="empty">카테고리 데이터가 없습니다.</p>'
+    top = max(v for _, v in items) or 1
+    rows = []
+    for i, (label, value) in enumerate(items):
+        pct = max(2, round(100 * value / top))
+        lc = light_colors[i % len(light_colors)]
+        dc = dark_colors[i % len(dark_colors)]
+        rows.append(
+            f'<div class="hbar"><span class="hbar-label" title="{esc(label)}">{esc(label)}</span>'
+            f'<div class="hbar-track"><i style="width:{pct}%;--c:{lc};--cd:{dc}"></i></div>'
+            f'<span class="hbar-val">{value:,}</span></div>'
+        )
+    return f'<div class="hbar-chart">{"".join(rows)}</div>'
+
+
 def build_dashboard(domain_counts: dict[str, int]) -> str:
     ci = load_csv("3_구성관리/CI.csv")
     total = len(ci)
@@ -376,10 +453,13 @@ def build_dashboard(domain_counts: dict[str, int]) -> str:
     kpi_html = "".join(
         f'<div class="card kpi"><label>{esc(l)}</label><div class="v">{v:,}</div></div>' for l, v in kpis
     )
-    cat_html = "".join(
-        f'<li><span>{esc(l)}</span><b>{c}</b></li>' for l, c in sorted(category, key=lambda x: -x[1])[:15]
-    )
-    st_html = "".join(f'<li><span>{esc(l)}</span><b>{c}</b></li>' for l, c in status)
+    cat_sorted = sorted(category, key=lambda x: -x[1])[:12]
+    light_bar = ["#3a5eef", "#5b84fa", "#8fb0ff"]
+    dark_bar = ["#00e5ff", "#39ff14", "#7df9ff"]
+    light_donut = ["#3a5eef", "#22c3a6", "#f4a63b", "#8fb0ff", "#e5679a"]
+    dark_donut = ["#00e5ff", "#39ff14", "#fbbf24", "#7df9ff", "#ff7ac8"]
+    cat_chart = hbar_chart(cat_sorted, light_bar, dark_bar)
+    st_chart = svg_donut(status, light_donut, dark_donut)
     dom_html = "".join(
         f'<a class="card dom" href="{href("/d/" + d["key"] + ".html")}"><div class="t">{esc(d["title"])}</div>'
         f'<div class="c">{domain_counts.get(d["key"], 0)}</div></a>'
@@ -398,9 +478,14 @@ def build_dashboard(domain_counts: dict[str, int]) -> str:
   </div>
 </header>
 <section class="kpis">{kpi_html}</section>
-<section class="grid2">
-  <div class="card"><h2>카테고리별 자산 현황</h2><ul class="lists">{cat_html}</ul></div>
-  <div class="card"><h2>자산 상태 분포</h2><ul class="lists">{st_html}</ul>
+<section class="grid2 chart-grid">
+  <div class="card chart-card">
+    <div class="chart-head"><h2>카테고리별 자산 현황</h2><span class="chart-src">CI.csv</span></div>
+    {cat_chart}
+  </div>
+  <div class="card chart-card">
+    <div class="chart-head"><h2>자산 상태 분포</h2><span class="chart-src">CI.STATUS</span></div>
+    {st_chart}
     <div class="move">
       <div class="mini ok"><span>자산 추가</span><b>{added}</b></div>
       <div class="mini bad"><span>자산 삭제</span><b>{removed}</b></div>
@@ -606,10 +691,11 @@ a.brand:hover { background: rgba(58,94,239,.06); }
   background: color-mix(in srgb, var(--card) 70%, transparent);
 }
 .site-footer-inner {
-  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
+  text-align: left;
 }
 .footer-org { font-size: 12px; color: var(--muted); }
-.footer-links { display: flex; align-items: center; gap: 10px; }
+.footer-links { display: flex; align-items: center; gap: 10px; justify-content: flex-start; }
 .footer-link {
   border: 0; background: none; padding: 0; cursor: pointer;
   font-size: 13px; font-weight: 700; color: var(--text); text-decoration: underline;
@@ -668,6 +754,51 @@ h2 { margin: 0 0 12px; font-size: 16px; color: var(--text); }
 .kpi label { font-size: 13px; color: var(--muted); }
 .kpi .v { margin-top: 8px; font-size: 30px; font-weight: 800; color: var(--text); letter-spacing: -0.02em; }
 .grid2 { display: grid; grid-template-columns: 1.4fr 1fr; gap: 14px; margin-bottom: 18px; }
+.chart-grid { align-items: stretch; }
+.chart-card { display: flex; flex-direction: column; gap: 12px; }
+.chart-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.chart-head h2 { margin: 0; }
+.chart-src { font-size: 11px; color: var(--muted); }
+
+.hbar-chart { display: flex; flex-direction: column; gap: 8px; }
+.hbar { display: grid; grid-template-columns: 110px 1fr 42px; gap: 8px; align-items: center; }
+.hbar-label {
+  font-size: 12px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.hbar-track {
+  height: 12px; border-radius: 999px; background: rgba(58,94,239,.1); overflow: hidden;
+}
+.hbar-track i {
+  display: block; height: 100%; border-radius: 999px;
+  background: var(--c, #3a5eef);
+  box-shadow: 0 0 0 transparent;
+}
+.hbar-val { font-size: 12px; font-weight: 800; text-align: right; color: var(--text); }
+
+.donut-wrap {
+  display: grid; grid-template-columns: 170px 1fr; gap: 12px; align-items: center;
+  min-height: 180px;
+}
+.donut-svg { width: 170px; height: 170px; }
+.donut-track { stroke: rgba(15,23,42,.06); }
+.donut-arc-dark { opacity: 0; pointer-events: none; }
+.donut-center-label {
+  fill: var(--muted); font-size: 6px; font-weight: 700;
+}
+.donut-center-value {
+  fill: var(--text); font-size: 9px; font-weight: 800;
+}
+.donut-legend { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.donut-legend li {
+  display: grid; grid-template-columns: 10px 1fr auto; gap: 8px; align-items: center;
+  font-size: 13px; color: var(--text);
+}
+.donut-legend i {
+  width: 10px; height: 10px; border-radius: 999px; background: var(--c);
+  box-shadow: 0 0 0 transparent;
+}
+.donut-legend b { font-variant-numeric: tabular-nums; }
+
 .lists { list-style: none; margin: 0; padding: 0; }
 .lists li { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 14px; color: var(--text); }
 .domains { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-bottom: 18px; }
@@ -799,6 +930,25 @@ html.theme-ops .footer-link, body.theme-ops .footer-link {
 html.theme-ops .footer-link:hover, body.theme-ops .footer-link:hover {
   color: #39ff14;
 }
+html.theme-ops .hbar-track, body.theme-ops .hbar-track {
+  background: rgba(0,229,255,.12);
+}
+html.theme-ops .hbar-track i, body.theme-ops .hbar-track i {
+  background: var(--cd, #00e5ff) !important;
+  box-shadow: 0 0 10px color-mix(in srgb, var(--cd, #00e5ff) 55%, transparent);
+}
+html.theme-ops .donut-track, body.theme-ops .donut-track {
+  stroke: rgba(0,229,255,.12);
+}
+html.theme-ops .donut-arc-light, body.theme-ops .donut-arc-light { opacity: 0; }
+html.theme-ops .donut-arc-dark, body.theme-ops .donut-arc-dark {
+  opacity: 1;
+  filter: drop-shadow(0 0 3px rgba(0,229,255,.55));
+}
+html.theme-ops .donut-legend i, body.theme-ops .donut-legend i {
+  background: var(--cd) !important;
+  box-shadow: 0 0 8px color-mix(in srgb, var(--cd) 60%, transparent);
+}
 html.theme-ops .legal-overlay, body.theme-ops .legal-overlay {
   background: rgba(0, 8, 18, 0.72);
 }
@@ -830,7 +980,8 @@ html.theme-ops .legal-close, body.theme-ops .legal-close {
 }
 @media (max-width: 640px) {
   .kpis, .grid2 { grid-template-columns: 1fr; }
-  .site-footer-inner { flex-direction: column; align-items: flex-start; }
+  .donut-wrap { grid-template-columns: 1fr; justify-items: center; }
+  .hbar { grid-template-columns: 88px 1fr 36px; }
 }
 """
 

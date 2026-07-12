@@ -60,9 +60,25 @@
   </div>
 </header>
 <section class="kpis"><div class="card kpi"><label>총 자산 수</label><div class="v">312</div></div><div class="card kpi"><label>변경 건수</label><div class="v">29</div></div><div class="card kpi"><label>장애 건수</label><div class="v">2</div></div><div class="card kpi"><label>문제 건수</label><div class="v">1</div></div></section>
-<section class="grid2">
-  <div class="card"><h2>카테고리별 자산 현황</h2><ul class="lists"><li><span>Storage</span><b>115</b></li><li><span>Staff</span><b>30</b></li><li><span>PC</span><b>30</b></li><li><span>VM</span><b>30</b></li><li><span>Server</span><b>20</b></li><li><span>Internal_Security_Sol</span><b>15</b></li><li><span>DMZ_Compute</span><b>15</b></li><li><span>L2_PAGE</span><b>12</b></li><li><span>Network_Security</span><b>10</b></li><li><span>Switch</span><b>10</b></li><li><span>Network_Equipment</span><b>8</b></li><li><span>L3_PAGE</span><b>8</b></li><li><span>L1_PAGE</span><b>4</b></li><li><span>Peripheral</span><b>3</b></li><li><span>Security_Management</span><b>2</b></li></ul></div>
-  <div class="card"><h2>자산 상태 분포</h2><ul class="lists"><li><span>운영중</span><b>261</b></li><li><span>활성</span><b>50</b></li><li><span>대기</span><b>1</b></li></ul>
+<section class="grid2 chart-grid">
+  <div class="card chart-card">
+    <div class="chart-head"><h2>카테고리별 자산 현황</h2><span class="chart-src">CI.csv</span></div>
+    <div class="hbar-chart"><div class="hbar"><span class="hbar-label" title="Storage">Storage</span><div class="hbar-track"><i style="width:100%;--c:#3a5eef;--cd:#00e5ff"></i></div><span class="hbar-val">115</span></div><div class="hbar"><span class="hbar-label" title="Staff">Staff</span><div class="hbar-track"><i style="width:26%;--c:#5b84fa;--cd:#39ff14"></i></div><span class="hbar-val">30</span></div><div class="hbar"><span class="hbar-label" title="PC">PC</span><div class="hbar-track"><i style="width:26%;--c:#8fb0ff;--cd:#7df9ff"></i></div><span class="hbar-val">30</span></div><div class="hbar"><span class="hbar-label" title="VM">VM</span><div class="hbar-track"><i style="width:26%;--c:#3a5eef;--cd:#00e5ff"></i></div><span class="hbar-val">30</span></div><div class="hbar"><span class="hbar-label" title="Server">Server</span><div class="hbar-track"><i style="width:17%;--c:#5b84fa;--cd:#39ff14"></i></div><span class="hbar-val">20</span></div><div class="hbar"><span class="hbar-label" title="Internal_Security_Sol">Internal_Security_Sol</span><div class="hbar-track"><i style="width:13%;--c:#8fb0ff;--cd:#7df9ff"></i></div><span class="hbar-val">15</span></div><div class="hbar"><span class="hbar-label" title="DMZ_Compute">DMZ_Compute</span><div class="hbar-track"><i style="width:13%;--c:#3a5eef;--cd:#00e5ff"></i></div><span class="hbar-val">15</span></div><div class="hbar"><span class="hbar-label" title="L2_PAGE">L2_PAGE</span><div class="hbar-track"><i style="width:10%;--c:#5b84fa;--cd:#39ff14"></i></div><span class="hbar-val">12</span></div><div class="hbar"><span class="hbar-label" title="Network_Security">Network_Security</span><div class="hbar-track"><i style="width:9%;--c:#8fb0ff;--cd:#7df9ff"></i></div><span class="hbar-val">10</span></div><div class="hbar"><span class="hbar-label" title="Switch">Switch</span><div class="hbar-track"><i style="width:9%;--c:#3a5eef;--cd:#00e5ff"></i></div><span class="hbar-val">10</span></div><div class="hbar"><span class="hbar-label" title="Network_Equipment">Network_Equipment</span><div class="hbar-track"><i style="width:7%;--c:#5b84fa;--cd:#39ff14"></i></div><span class="hbar-val">8</span></div><div class="hbar"><span class="hbar-label" title="L3_PAGE">L3_PAGE</span><div class="hbar-track"><i style="width:7%;--c:#8fb0ff;--cd:#7df9ff"></i></div><span class="hbar-val">8</span></div></div>
+  </div>
+  <div class="card chart-card">
+    <div class="chart-head"><h2>자산 상태 분포</h2><span class="chart-src">CI.STATUS</span></div>
+    
+<div class="donut-wrap">
+  <svg class="donut-svg" viewBox="0 0 100 100" role="img" aria-label="자산 상태 분포">
+    <circle class="donut-track" cx="50" cy="50" r="36" fill="none" stroke-width="14"/>
+    <path class="donut-arc donut-arc-light" d="M 50.000 14.000 A 36 36 0 1 1 19.192 31.376" fill="none" stroke="#3a5eef" stroke-width="14" stroke-linecap="butt" data-label="운영중" data-value="261"/><path class="donut-arc donut-arc-light" d="M 19.192 31.376 A 36 36 0 0 1 49.275 14.007" fill="none" stroke="#22c3a6" stroke-width="14" stroke-linecap="butt" data-label="활성" data-value="50"/><path class="donut-arc donut-arc-light" d="M 49.275 14.007 A 36 36 0 0 1 50.000 14.000" fill="none" stroke="#f4a63b" stroke-width="14" stroke-linecap="butt" data-label="대기" data-value="1"/>
+    <path class="donut-arc donut-arc-dark" d="M 50.000 14.000 A 36 36 0 1 1 19.192 31.376" fill="none" stroke="#00e5ff" stroke-width="14" stroke-linecap="butt" data-label="운영중" data-value="261"/><path class="donut-arc donut-arc-dark" d="M 19.192 31.376 A 36 36 0 0 1 49.275 14.007" fill="none" stroke="#39ff14" stroke-width="14" stroke-linecap="butt" data-label="활성" data-value="50"/><path class="donut-arc donut-arc-dark" d="M 49.275 14.007 A 36 36 0 0 1 50.000 14.000" fill="none" stroke="#fbbf24" stroke-width="14" stroke-linecap="butt" data-label="대기" data-value="1"/>
+    <text class="donut-center-label" x="50" y="47" text-anchor="middle">합계</text>
+    <text class="donut-center-value" x="50" y="58" text-anchor="middle">312</text>
+  </svg>
+  <ul class="donut-legend"><li><i style="--c:#3a5eef;--cd:#00e5ff"></i><span>운영중</span><b>261</b></li><li><i style="--c:#22c3a6;--cd:#39ff14"></i><span>활성</span><b>50</b></li><li><i style="--c:#f4a63b;--cd:#fbbf24"></i><span>대기</span><b>1</b></li></ul>
+</div>
+
     <div class="move">
       <div class="mini ok"><span>자산 추가</span><b>4</b></div>
       <div class="mini bad"><span>자산 삭제</span><b>0</b></div>
@@ -78,18 +94,18 @@
     <tbody><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_009</a></td><td>초기 베이스라인 정의서 v1.1(DDL 개정판) 발행</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_008</a></td><td>통합 초기 베이스라인 v1.0 확정 및 자산-형상 DB 연결 스키마 개선</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_007</a></td><td>실데이터 없던 7개 관리 화면에 가상 예시 데이터 1건씩 등록</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_006</a></td><td>필드값 없는 변경 티켓 9건 정리(CI·CHANGE_CI_MAP 참조 포함 일괄 정리)</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_005</a></td><td>경영관리에 구축산출물 폴더 신설(테스트결과서·프로그램명세서·DB명세서·아키텍처결과서·표준정의서 5종 PDF)</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_004</a></td><td>전체 관리 페이지(장애·문제·배포·요청·SLA·형상·운영상태·이벤트·테스트·연계·백업)에 변경관리와 동일한 CRUD 화면 구현</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_003</a></td><td>변경요청 조회 표의 컬럼 헤더를 한글로 치환</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr><tr><td class="mono"><a href="/ITSM_CURSOR/d/change.html">CHG_20260712_002</a></td><td>ERD 페이지 전체 폭 활용, 컬럼명 한글(영어) 표기, 확대/축소·드래그 이동 인터랙션 추가</td><td>표준</td><td>완료</td><td>2026-07-12</td></tr></tbody>
   </table></div>
 </section>
-<p class="foot">생성: 2026-07-13 00:00 · 읽기 전용 공개 뷰 · CRUD는 로컬 서버에서 이용</p>
+<p class="foot">생성: 2026-07-13 00:07 · 읽기 전용 공개 뷰 · CRUD는 로컬 서버에서 이용</p>
 </div>
 
       </main>
       <footer class="site-footer">
         <div class="site-footer-inner">
-          <span class="footer-org">AI활성화진흥공단 · 표준운영관리 포털</span>
           <nav class="footer-links" aria-label="약관">
             <button type="button" class="footer-link" data-legal="legal-privacy">개인정보 처리방침</button>
             <span class="footer-sep" aria-hidden="true">|</span>
             <button type="button" class="footer-link" data-legal="legal-terms">이용약관</button>
           </nav>
+          <span class="footer-org">AI활성화진흥공단 · 표준운영관리 포털</span>
         </div>
       </footer>
     </div>
